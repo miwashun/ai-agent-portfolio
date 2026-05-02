@@ -13,11 +13,11 @@ OpenAI APIへの接続確認は完了。
 - [x] `.env` にOpenAI APIキーを設定する
 - [x] OpenAI APIへの接続を確認する
 - [x] `requirements.txt` を作成する
-- [ ] 初回コミットを作成する
-- [ ] README.md を作成する
+- [x] 初回コミットを作成する
+- [x] README.md を作成する
 - [ ] `.env.example` を作成する
-- [ ] project-plan.md を追加する
-- [ ] TODO.md を追加する
+- [x] project-plan.md を追加する
+- [x] TODO.md を追加する
 
 ## 次にやること
 
