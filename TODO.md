@@ -15,7 +15,7 @@ OpenAI APIへの接続確認は完了。
 - [x] `requirements.txt` を作成する
 - [x] 初回コミットを作成する
 - [x] README.md を作成する
-- [ ] `.env.example` を作成する
+- [x] `.env.example` を作成する
 - [x] project-plan.md を追加する
 - [x] TODO.md を追加する
 
