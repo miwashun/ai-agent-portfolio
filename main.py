@@ -1,4 +1,5 @@
 import os
+from typing import Any, cast
 from dotenv import load_dotenv
 from openai import APIConnectionError, APITimeoutError, AuthenticationError, OpenAI, RateLimitError
 
@@ -26,7 +27,7 @@ def create_client() -> OpenAI:
 def get_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) -> str:
     response = client.responses.create(
         model=MODEL_NAME,
-        input=conversation_history,
+        input=cast(Any, conversation_history),
     )
     return response.output_text
 
