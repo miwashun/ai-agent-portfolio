@@ -1,10 +1,10 @@
-
 import os
 from dotenv import load_dotenv
 from openai import APIConnectionError, APITimeoutError, AuthenticationError, OpenAI, RateLimitError
 
 MODEL_NAME = "gpt-4.1-mini"
 EXIT_COMMANDS = ["exit", "quit"]
+MAX_HISTORY_LENGTH = 10
 
 
 def get_api_key():
@@ -23,12 +23,16 @@ def create_client():
     return OpenAI(api_key=api_key)
 
 
-def get_ai_response(client, user_input):
+def get_ai_response(client, conversation_history):
     response = client.responses.create(
         model=MODEL_NAME,
-        input=user_input,
+        input=conversation_history,
     )
     return response.output_text
+
+
+def trim_conversation_history(conversation_history):
+    return conversation_history[-MAX_HISTORY_LENGTH:]
 
 
 # エラー内容に応じた日本語メッセージを出力する関数
@@ -47,6 +51,7 @@ def print_error_message(error):
 
 def run_chat_loop(client):
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
+    conversation_history = []
 
     while True:
         user_input = input("あなた: ").strip()
@@ -59,9 +64,14 @@ def run_chat_loop(client):
             print("入力が空です。質問を入力してください。")
             continue
 
+        conversation_history.append({"role": "user", "content": user_input})
+        conversation_history = trim_conversation_history(conversation_history)
+
         try:
-            ai_response = get_ai_response(client, user_input)
+            ai_response = get_ai_response(client, conversation_history)
             print(f"AI: {ai_response}")
+            conversation_history.append({"role": "assistant", "content": ai_response})
+            conversation_history = trim_conversation_history(conversation_history)
         except Exception as error:
             print_error_message(error)
 
