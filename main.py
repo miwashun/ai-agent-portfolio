@@ -7,7 +7,7 @@ EXIT_COMMANDS = ["exit", "quit"]
 MAX_HISTORY_LENGTH = 10
 
 
-def get_api_key():
+def get_api_key() -> str:
     load_dotenv()
 
     api_key = os.getenv("OPENAI_API_KEY")
@@ -18,12 +18,12 @@ def get_api_key():
     return api_key
 
 
-def create_client():
+def create_client() -> OpenAI:
     api_key = get_api_key()
     return OpenAI(api_key=api_key)
 
 
-def get_ai_response(client, conversation_history):
+def get_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) -> str:
     response = client.responses.create(
         model=MODEL_NAME,
         input=conversation_history,
@@ -31,12 +31,12 @@ def get_ai_response(client, conversation_history):
     return response.output_text
 
 
-def trim_conversation_history(conversation_history):
+def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
     return conversation_history[-MAX_HISTORY_LENGTH:]
 
 
 # エラー内容に応じた日本語メッセージを出力する関数
-def print_error_message(error):
+def print_error_message(error: Exception) -> None:
     if isinstance(error, AuthenticationError):
         print("エラー: APIキーが無効、または認証に失敗しました。")
     elif isinstance(error, RateLimitError):
@@ -49,9 +49,9 @@ def print_error_message(error):
         print(f"予期しないエラーが発生しました: {error}")
 
 
-def run_chat_loop(client):
+def run_chat_loop(client: OpenAI) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
-    conversation_history = []
+    conversation_history: list[dict[str, str]] = []
 
     while True:
         user_input = input("あなた: ").strip()
@@ -76,7 +76,7 @@ def run_chat_loop(client):
             print_error_message(error)
 
 
-def main():
+def main() -> None:
     client = create_client()
     run_chat_loop(client)
 
