@@ -61,8 +61,8 @@ OpenAI APIへの接続確認は完了。
 - [x] README.md に概要を書く
 - [x] README.md にセットアップ手順を書く
 - [x] README.md に起動方法を書く
-- [ ] README.md に使用技術を書く
-- [ ] README.md に設計上の工夫を書く
+- [x] README.md に使用技術を書く
+- [x] README.md に設計上の工夫を書く
 - [x] README.md に今後の改善点を書く
 - [ ] project-plan.md に開発方針を書く
 - [x] TODO.md で進捗を管理する
