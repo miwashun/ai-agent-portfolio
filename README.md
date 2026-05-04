@@ -17,3 +17,10 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## 環境変数
+
+`.env.example` を参考に `.env` を作成し、OpenAI API キーを設定します。
+
+```env
+OPENAI_API_KEY=your_api_key_here
