@@ -22,6 +22,29 @@ pip install -r requirements.txt
 
 `.env.example` を参考に `.env` を作成し、OpenAI API キーを設定します。
 
+
 ```env
 OPENAI_API_KEY=your_api_key_here
 ```
+
+## 起動方法
+
+```bash
+python main.py
+```
+
+## 終了方法
+
+起動後、以下のどちらかを入力します。
+
+```txt
+exit
+quit
+```
+
+## 今後の予定
+
+- 会話履歴の保持
+- エラー処理の整理
+- コードの関数分割
+- AIエージェント機能の追加
