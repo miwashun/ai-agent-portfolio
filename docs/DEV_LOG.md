@@ -40,6 +40,7 @@
 - `TODO.md` / `docs/DEV_LOG.md` / `docs/DECISIONS.md` を読み込み、TODO整理エージェントの応答に反映
 - TODO整理エージェントの回答形式を固定
 - `project-plan.md` を現在の実装状態に合わせて更新
+- `.env.example` に秘密情報が含まれていないことを確認
 
 ### 現在の状態
 
@@ -48,4 +49,3 @@
 
 ### 次にやること
 
-- `.env.example` に秘密情報が含まれていないか確認する
