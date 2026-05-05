@@ -5,7 +5,19 @@ from openai import APIConnectionError, APITimeoutError, AuthenticationError, Ope
 
 MODEL_NAME = "gpt-4.1-mini"
 EXIT_COMMANDS = ["exit", "quit"]
+
 MAX_HISTORY_LENGTH = 10
+TODO_AGENT_SYSTEM_MESSAGE = """
+あなたはTODO整理を支援するAIエージェントです。
+ユーザーの入力をもとに、次にやること、優先順位、注意点を整理してください。
+
+制約:
+- ファイルを自動編集しない
+- Git操作を自動実行しない
+- クラウド操作を行わない
+- 外部サービスと連携しない
+- 実行が必要な操作は、ユーザーが確認して手動で行う前提で提案する
+""".strip()
 
 
 def get_api_key() -> str:
@@ -32,8 +44,19 @@ def get_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) 
     return response.output_text
 
 
+
 def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
     return conversation_history[-MAX_HISTORY_LENGTH:]
+
+
+# 初期会話履歴を作成する関数
+def create_initial_conversation_history() -> list[dict[str, str]]:
+    return [
+        {
+            "role": "system",
+            "content": TODO_AGENT_SYSTEM_MESSAGE,
+        }
+    ]
 
 
 # 統計情報を初期化する関数
@@ -67,7 +90,7 @@ def print_error_message(error: Exception) -> None:
 
 def run_chat_loop(client: OpenAI) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
-    conversation_history: list[dict[str, str]] = []
+    conversation_history = create_initial_conversation_history()
     stats = create_stats()
 
     while True:
