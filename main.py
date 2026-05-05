@@ -36,6 +36,21 @@ def trim_conversation_history(conversation_history: list[dict[str, str]]) -> lis
     return conversation_history[-MAX_HISTORY_LENGTH:]
 
 
+# 統計情報を初期化する関数
+def create_stats() -> dict[str, int]:
+    return {
+        "api_success_count": 0,
+        "error_count": 0,
+    }
+
+
+# 実行サマリーを表示する関数
+def print_execution_summary(stats: dict[str, int]) -> None:
+    print("\n実行サマリー:")
+    print(f"- API呼び出し成功回数: {stats['api_success_count']}")
+    print(f"- エラー回数: {stats['error_count']}")
+
+
 # エラー内容に応じた日本語メッセージを出力する関数
 def print_error_message(error: Exception) -> None:
     if isinstance(error, AuthenticationError):
@@ -53,12 +68,14 @@ def print_error_message(error: Exception) -> None:
 def run_chat_loop(client: OpenAI) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
     conversation_history: list[dict[str, str]] = []
+    stats = create_stats()
 
     while True:
         user_input = input("あなた: ").strip()
 
         if user_input.lower() in EXIT_COMMANDS:
             print("終了します。")
+            print_execution_summary(stats)
             break
 
         if not user_input:
@@ -70,10 +87,12 @@ def run_chat_loop(client: OpenAI) -> None:
 
         try:
             ai_response = get_ai_response(client, conversation_history)
+            stats["api_success_count"] += 1
             print(f"AI: {ai_response}")
             conversation_history.append({"role": "assistant", "content": ai_response})
             conversation_history = trim_conversation_history(conversation_history)
         except Exception as error:
+            stats["error_count"] += 1
             print_error_message(error)
 
 
