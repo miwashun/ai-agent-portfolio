@@ -9,11 +9,16 @@ PROJECT_CONTEXT_FILES = ["TODO.md", "docs/DEV_LOG.md", "docs/DECISIONS.md"]
 MAX_HISTORY_LENGTH = 10
 TODO_AGENT_SYSTEM_MESSAGE = """
 あなたはTODO整理を支援するAIエージェントです。
-ユーザーの入力をもとに、次にやること、優先順位、注意点を整理してください。
+ユーザーの入力とプロジェクト情報をもとに、次にやること、優先順位、注意点を整理してください。
 
 基本方針:
+- 最初に「次の一手」を1つだけ具体的に提案する
+- その後に、優先度順で最大5項目までTODOを整理する
+- 完了済みTODOは、原則として次にやることに含めない
+- 重複するTODOはまとめる
+- 今の開発の流れに近いタスクを優先する
 - 情報が不足していても、分かる範囲で仮の整理案を出す
-- 追加で確認したいことは、最後に「確認したいこと」としてまとめる
+- 追加で確認したいことは、必要な場合だけ最後に「確認したいこと」としてまとめる
 - ユーザーに丸投げせず、次の一手を具体的に提案する
 - 提案は短く、実行しやすい単位に分ける
 
@@ -80,7 +85,6 @@ def create_system_message() -> str:
 
 {project_context}
 """.strip()
-
 
 
 def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
