@@ -5,7 +5,7 @@ from openai import APIConnectionError, APITimeoutError, AuthenticationError, Ope
 
 MODEL_NAME = "gpt-4.1-mini"
 EXIT_COMMANDS = ["exit", "quit"]
-
+PROJECT_CONTEXT_FILES = ["TODO.md", "docs/DEV_LOG.md", "docs/DECISIONS.md"]
 MAX_HISTORY_LENGTH = 10
 TODO_AGENT_SYSTEM_MESSAGE = """
 あなたはTODO整理を支援するAIエージェントです。
@@ -50,6 +50,38 @@ def get_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) 
     return response.output_text
 
 
+# プロジェクトコンテキストファイルを読み込む関数
+def read_project_context_file(file_path: str) -> str:
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            return file.read()
+    except FileNotFoundError:
+        return f"{file_path} は見つかりませんでした。"
+
+
+# プロジェクトコンテキストを作成する関数
+def create_project_context() -> str:
+    context_parts = []
+
+    for file_path in PROJECT_CONTEXT_FILES:
+        file_content = read_project_context_file(file_path)
+        context_parts.append(f"## {file_path}\n\n{file_content}")
+
+    return "\n\n---\n\n".join(context_parts)
+
+
+# システムメッセージを作成する関数
+def create_system_message() -> str:
+    project_context = create_project_context()
+    return f"""{TODO_AGENT_SYSTEM_MESSAGE}
+
+以下は現在のプロジェクト情報です。
+この情報を参考にして、具体的なTODO整理を行ってください。
+
+{project_context}
+""".strip()
+
+
 
 def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
     return conversation_history[-MAX_HISTORY_LENGTH:]
@@ -60,7 +92,7 @@ def create_initial_conversation_history() -> list[dict[str, str]]:
     return [
         {
             "role": "system",
-            "content": TODO_AGENT_SYSTEM_MESSAGE,
+            "content": create_system_message(),
         }
     ]
 
