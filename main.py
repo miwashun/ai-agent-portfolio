@@ -1,46 +1,18 @@
-import os
-from typing import Any, cast
-from dotenv import load_dotenv
 from openai import (
     APIConnectionError,
     APITimeoutError,
     AuthenticationError,
     BadRequestError,
     NotFoundError,
-    OpenAI,
     RateLimitError,
 )
 from src.config import (
     EXIT_COMMANDS,
     MAX_HISTORY_LENGTH,
-    MODEL_NAME,
     PROJECT_CONTEXT_FILES,
     TODO_AGENT_SYSTEM_MESSAGE,
 )
-
-
-def load_openai_api_key() -> str:
-    load_dotenv()
-
-    api_key = os.getenv("OPENAI_API_KEY")
-
-    if not api_key:
-        raise RuntimeError("OPENAI_API_KEY が .env に設定されていません。")
-
-    return api_key
-
-
-def create_openai_client() -> OpenAI:
-    api_key = load_openai_api_key()
-    return OpenAI(api_key=api_key)
-
-
-def generate_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) -> str:
-    response = client.responses.create(
-        model=MODEL_NAME,
-        input=cast(Any, conversation_history),
-    )
-    return response.output_text
+from src.openai_client import create_openai_client, generate_ai_response
 
 
 # プロジェクトコンテキストファイルを読み込む関数
@@ -122,7 +94,7 @@ def print_openai_error_message(error: Exception) -> None:
         print(f"予期しないエラーが発生しました: {error}")
 
 
-def run_todo_agent_chat_loop(client: OpenAI) -> None:
+def run_todo_agent_chat_loop(client) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
     conversation_history = create_initial_conversation_history()
     stats = create_execution_stats()
