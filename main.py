@@ -5,6 +5,7 @@ from src.config import (
 from src.context import create_system_message
 from src.errors import print_openai_error_message
 from src.openai_client import create_openai_client, generate_ai_response
+from src.stats import create_execution_stats, print_execution_summary
 
 
 def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -19,21 +20,6 @@ def create_initial_conversation_history() -> list[dict[str, str]]:
             "content": create_system_message(),
         }
     ]
-
-
-# 統計情報を初期化する関数
-def create_execution_stats() -> dict[str, int]:
-    return {
-        "api_success_count": 0,
-        "error_count": 0,
-    }
-
-
-# 実行サマリーを表示する関数
-def print_execution_summary(stats: dict[str, int]) -> None:
-    print("\n実行サマリー:")
-    print(f"- API呼び出し成功回数: {stats['api_success_count']}")
-    print(f"- エラー回数: {stats['error_count']}")
 
 
 def run_todo_agent_chat_loop(client) -> None:
