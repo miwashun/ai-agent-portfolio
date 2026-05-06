@@ -68,6 +68,7 @@
 - `src/` パッケージを追加済み
 - 設定値を `src/config.py` に分離済み
 - OpenAI関連処理を `src/openai_client.py` に分離済み
+- プロジェクト文脈読み込み処理を `src/context.py` に分離済み
 
 ## 7. 今後追加したい機能
 
