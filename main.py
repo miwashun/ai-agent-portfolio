@@ -1,25 +1,10 @@
 from src.config import (
     EXIT_COMMANDS,
-    MAX_HISTORY_LENGTH,
 )
-from src.context import create_system_message
 from src.errors import print_openai_error_message
 from src.openai_client import create_openai_client, generate_ai_response
 from src.stats import create_execution_stats, print_execution_summary
-
-
-def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
-    return conversation_history[-MAX_HISTORY_LENGTH:]
-
-
-# 初期会話履歴を作成する関数
-def create_initial_conversation_history() -> list[dict[str, str]]:
-    return [
-        {
-            "role": "system",
-            "content": create_system_message(),
-        }
-    ]
+from src.agent import trim_conversation_history, create_initial_conversation_history
 
 
 def run_todo_agent_chat_loop(client) -> None:
