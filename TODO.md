@@ -60,6 +60,7 @@ OpenAI APIへの接続確認は完了。
 - [x] プロジェクト文脈読み込み処理を `src/context.py` に分離する
 - [x] OpenAIエラー表示処理を `src/errors.py` に分離する
 - [x] 実行サマリー処理を `src/stats.py` に分離する
+- [x] 会話履歴・初期会話履歴処理を `src/agent.py` に分離する
 
 ## ドキュメント
 
