@@ -60,6 +60,9 @@
 - ツール実行ルールを `docs/DECISIONS.md` に記録
 - `TODO.md` にツール実行ルールの検討完了を反映
 - APIキー未設定時のエラー表示をユーザー向けに改善
+- `src/` パッケージを追加
+- 設定値を `src/config.py` に分離
+- OpenAI関連処理を `src/openai_client.py` に分離
 
 ### 現在の状態
 
