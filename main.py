@@ -181,8 +181,12 @@ def run_todo_agent_chat_loop(client: OpenAI) -> None:
 
 
 def main() -> None:
-    client = create_openai_client()
-    run_todo_agent_chat_loop(client)
+    try:
+        client = create_openai_client()
+        run_todo_agent_chat_loop(client)
+    except RuntimeError as error:
+        print(f"エラー: {error}")
+        print(".env.example を参考に .env を作成してください。")
 
 
 if __name__ == "__main__":
