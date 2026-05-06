@@ -58,6 +58,7 @@ OpenAI APIへの接続確認は完了。
 - [x] 設定値を `src/config.py` に分離する
 - [x] OpenAI関連処理を `src/openai_client.py` に分離する
 - [x] プロジェクト文脈読み込み処理を `src/context.py` に分離する
+- [x] OpenAIエラー表示処理を `src/errors.py` に分離する
 
 ## ドキュメント
 
