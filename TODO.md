@@ -61,6 +61,7 @@ OpenAI APIへの接続確認は完了。
 - [x] OpenAIエラー表示処理を `src/errors.py` に分離する
 - [x] 実行サマリー処理を `src/stats.py` に分離する
 - [x] 会話履歴・初期会話履歴処理を `src/agent.py` に分離する
+- [x] CLIチャットループ処理を `src/cli.py` に分離する
 
 ## ドキュメント
 
