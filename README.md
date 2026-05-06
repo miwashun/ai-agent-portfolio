@@ -58,7 +58,29 @@ quit
 
 ## 今後の予定
 
-- 型ヒントの追加
-- ログ設計の検討
-- エージェントに実行させるタスクの整理
-- ツール呼び出し機能の追加
+- 実行系ツールを追加するか検討する
+- README.md に現在の設計やファイル構成をさらに整理する
+- Web化やクラウド化の方針を検討する
+
+## ファイル構成
+
+```txt
+.
+├── main.py
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── openai_client.py
+│   ├── context.py
+│   ├── agent.py
+│   ├── cli.py
+│   ├── errors.py
+│   └── stats.py
+├── docs/
+│   ├── DEV_LOG.md
+│   └── DECISIONS.md
+├── TODO.md
+├── project-plan.md
+├── requirements.txt
+└── README.md
+```
