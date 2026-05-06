@@ -1,7 +1,15 @@
 import os
 from typing import Any, cast
 from dotenv import load_dotenv
-from openai import APIConnectionError, APITimeoutError, AuthenticationError, OpenAI, RateLimitError
+from openai import (
+    APIConnectionError,
+    APITimeoutError,
+    AuthenticationError,
+    BadRequestError,
+    NotFoundError,
+    OpenAI,
+    RateLimitError,
+)
 
 MODEL_NAME = "gpt-4.1-mini"
 EXIT_COMMANDS = ["exit", "quit"]
@@ -133,6 +141,10 @@ def print_error_message(error: Exception) -> None:
         print("エラー: APIリクエストがタイムアウトしました。通信環境を確認して再実行してください。")
     elif isinstance(error, APIConnectionError):
         print("エラー: OpenAI APIへの接続に失敗しました。ネットワーク接続を確認してください。")
+    elif isinstance(error, NotFoundError):
+        print("エラー: モデル名が間違っている可能性があります。MODEL_NAME を確認してください。")
+    elif isinstance(error, BadRequestError):
+        print("エラー: APIリクエストの内容に問題があります。モデル名や入力形式を確認してください。")
     else:
         print(f"予期しないエラーが発生しました: {error}")
 
