@@ -69,6 +69,7 @@
 - 設定値を `src/config.py` に分離済み
 - OpenAI関連処理を `src/openai_client.py` に分離済み
 - プロジェクト文脈読み込み処理を `src/context.py` に分離済み
+- 会話履歴・初期会話履歴処理を `src/agent.py` に分離済み
 
 ## 7. 今後追加したい機能
 
