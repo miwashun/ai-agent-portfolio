@@ -65,12 +65,15 @@
 - TODO整理エージェントの初期版を実装済み
 - `TODO.md` / `docs/DEV_LOG.md` / `docs/DECISIONS.md` のプロジェクト情報読み込みを実装済み
 - README / TODO / DEV_LOG / DECISIONS を整備済み
+- `src/` パッケージを追加済み
+- 設定値を `src/config.py` に分離済み
+- OpenAI関連処理を `src/openai_client.py` に分離済み
 
 ## 7. 今後追加したい機能
 
 ### ローカル開発フェーズ
 
-- 必要に応じて `src/` ディレクトリを作成し、コードを分割する
+- 残りの処理を必要に応じて `src/` 配下へ分割する
 - 関数名をさらに分かりやすくする
 - APIキー未設定時やモデル名誤指定時の確認を行う
 - `.env.example` に秘密情報が含まれていないか確認する
