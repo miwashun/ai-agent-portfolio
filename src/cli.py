@@ -3,6 +3,7 @@ from src.config import EXIT_COMMANDS
 from src.errors import print_openai_error_message
 from src.openai_client import generate_ai_response
 from src.stats import create_execution_stats, print_execution_summary
+from src.project_summary import create_project_summary
 
 
 def run_todo_agent_chat_loop(client) -> None:
@@ -20,6 +21,10 @@ def run_todo_agent_chat_loop(client) -> None:
 
         if not user_input:
             print("入力が空です。質問を入力してください。")
+            continue
+
+        if user_input.lower() == "summary":
+            print(create_project_summary())
             continue
 
         conversation_history.append({"role": "user", "content": user_input})
