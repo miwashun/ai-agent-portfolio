@@ -99,6 +99,7 @@
 ### 実施したこと
 
 - TODO候補生成ツールの出力内容を候補一覧形式に整理
+- README.md に `summary` / `todo-candidates` コマンドの説明を追記
 
 ### 現在の状態
 
@@ -107,4 +108,4 @@
 
 ### 次にやること
 
-- README.md に `summary` / `todo-candidates` コマンドを追記する
+- 次に追加する安全な補助ツールを検討する
