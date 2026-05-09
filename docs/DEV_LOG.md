@@ -100,11 +100,14 @@
 
 - TODO候補生成ツールの出力内容を候補一覧形式に整理
 - README.md に `summary` / `todo-candidates` コマンドの説明を追記
+- `command-suggestions` コマンドで、APIを呼ばずにコマンド候補を表示できるようにした
+- README.md に `command-suggestions` コマンドの説明を追記
 
 ### 現在の状態
 
 - `todo-candidates` コマンドで、APIを呼ばずにTODO候補一覧を表示できる
 - TODO候補生成ツールは、TODO.md の自動編集、Git操作、外部API呼び出しを行わない
+- `command-suggestions` コマンドで、APIを呼ばずにコマンド候補を表示できる
 
 ### 次にやること
 
