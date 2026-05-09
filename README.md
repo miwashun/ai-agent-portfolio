@@ -59,6 +59,12 @@ todo-candidates
 
 次に追加・確認すべきTODO候補を表示します。TODO.md の自動編集、Git操作、外部API呼び出しは行いません。
 
+```txt
+command-suggestions
+```
+
+次に実行するとよい確認コマンド候補を表示します。コマンドの自動実行、ファイル編集、Git操作、外部API呼び出しは行いません。
+
 ## 使用技術
 
 - Python
@@ -92,7 +98,10 @@ todo-candidates
 │   ├── agent.py
 │   ├── cli.py
 │   ├── errors.py
-│   └── stats.py
+│   ├── stats.py
+│   ├── project_summary.py
+│   ├── todo_candidates.py
+│   └── command_suggestions.py
 ├── docs/
 │   ├── DEV_LOG.md
 │   └── DECISIONS.md
