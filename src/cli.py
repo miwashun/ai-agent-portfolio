@@ -4,7 +4,7 @@ from src.errors import print_openai_error_message
 from src.openai_client import generate_ai_response
 from src.stats import create_execution_stats, print_execution_summary
 from src.project_summary import create_project_summary
-
+from src.todo_candidates import create_todo_candidates
 
 def run_todo_agent_chat_loop(client) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
@@ -25,6 +25,10 @@ def run_todo_agent_chat_loop(client) -> None:
 
         if user_input.lower() == "summary":
             print(create_project_summary())
+            continue
+
+        if user_input.lower() == "todo-candidates":
+            print(create_todo_candidates())
             continue
 
         conversation_history.append({"role": "user", "content": user_input})
