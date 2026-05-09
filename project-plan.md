@@ -74,6 +74,7 @@
 - `main.py` を起動処理中心に整理済み
 - `summary` コマンドを追加済み
 - `todo-candidates` コマンドを追加済み
+- `command-suggestions` コマンドを追加済み
 - README.md に利用可能なCLIコマンドを追記済み
 
 ## 7. 今後追加したい機能
