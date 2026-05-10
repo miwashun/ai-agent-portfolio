@@ -121,6 +121,7 @@
 - `doc-suggestions` コマンドで、APIを呼ばずにドキュメント更新案を表示できるようにした
 - `summary` / `todo-candidates` / `command-suggestions` / `doc-suggestions` の動作確認を実施
 - 補助コマンド実行時に OpenAI API 呼び出し回数が増えないことを確認
+- 開発者向けログはファイル保存せず、終了時サマリー中心にする方針を `docs/DECISIONS.md` に記録
 
 ### 現在の状態
 
