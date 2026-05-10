@@ -2,6 +2,7 @@
 def create_execution_stats() -> dict[str, int]:
     return {
         "api_success_count": 0,
+        "helper_command_count": 0,
         "error_count": 0,
     }
 
@@ -10,4 +11,5 @@ def create_execution_stats() -> dict[str, int]:
 def print_execution_summary(stats: dict[str, int]) -> None:
     print("\n実行サマリー:")
     print(f"- API呼び出し成功回数: {stats['api_success_count']}")
+    print(f"- 補助コマンド実行回数: {stats['helper_command_count']}")
     print(f"- エラー回数: {stats['error_count']}")

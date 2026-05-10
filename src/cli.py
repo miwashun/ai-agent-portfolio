@@ -27,18 +27,22 @@ def run_todo_agent_chat_loop(client) -> None:
             continue
 
         if user_input.lower() == "summary":
+            stats["helper_command_count"] += 1
             print(create_project_summary())
             continue
 
         if user_input.lower() == "todo-candidates":
+            stats["helper_command_count"] += 1
             print(create_todo_candidates())
             continue
 
         if user_input.lower() == "command-suggestions":
+            stats["helper_command_count"] += 1
             print(create_command_suggestions())
             continue
 
         if user_input.lower() == "doc-suggestions":
+            stats["helper_command_count"] += 1
             print(create_doc_suggestions())
             continue
 
