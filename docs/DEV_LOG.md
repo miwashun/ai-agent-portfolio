@@ -122,6 +122,8 @@
 - `summary` / `todo-candidates` / `command-suggestions` / `doc-suggestions` の動作確認を実施
 - 補助コマンド実行時に OpenAI API 呼び出し回数が増えないことを確認
 - 開発者向けログはファイル保存せず、終了時サマリー中心にする方針を `docs/DECISIONS.md` に記録
+- 実行サマリーに補助コマンド実行回数を表示するようにした
+- 補助コマンド実行回数とAPI呼び出し成功回数を分けて確認できるようにした
 
 ### 現在の状態
 
