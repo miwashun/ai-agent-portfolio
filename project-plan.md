@@ -75,6 +75,7 @@
 - `summary` コマンドを追加済み
 - `todo-candidates` コマンドを追加済み
 - `command-suggestions` コマンドを追加済み
+- `doc-suggestions` コマンドを追加済み
 - README.md に利用可能なCLIコマンドを追記済み
 
 ## 7. 今後追加したい機能
