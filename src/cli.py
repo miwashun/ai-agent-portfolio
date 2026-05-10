@@ -6,6 +6,8 @@ from src.stats import create_execution_stats, print_execution_summary
 from src.project_summary import create_project_summary
 from src.todo_candidates import create_todo_candidates
 from src.command_suggestions import create_command_suggestions
+from src.doc_suggestions import create_doc_suggestions
+
 
 def run_todo_agent_chat_loop(client) -> None:
     print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
@@ -34,6 +36,10 @@ def run_todo_agent_chat_loop(client) -> None:
 
         if user_input.lower() == "command-suggestions":
             print(create_command_suggestions())
+            continue
+
+        if user_input.lower() == "doc-suggestions":
+            print(create_doc_suggestions())
             continue
 
         conversation_history.append({"role": "user", "content": user_input})
