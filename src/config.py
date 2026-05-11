@@ -1,6 +1,6 @@
 MODEL_NAME = "gpt-4.1-mini"
 EXIT_COMMANDS = ["exit", "quit"]
-PROJECT_CONTEXT_FILES = ["TODO.md", "docs/DEV_LOG.md", "docs/DECISIONS.md"]
+PROJECT_CONTEXT_FILES = ["TODO.md", "project-plan.md", "docs/DECISIONS.md"]
 MAX_HISTORY_LENGTH = 10
 TODO_AGENT_SYSTEM_MESSAGE = """
 あなたはTODO整理を支援するAIエージェントです。
