@@ -146,9 +146,18 @@
 - 補助コマンド群の扱いを README / project-plan.md に反映
 - AIに読み込ませるプロジェクト文脈を整理する方針に変更
 - TODO.md / project-plan.md / docs/DECISIONS.md / docs/DEV_LOG.md の役割を明確化
+- `docs/DEV_LOG.md` を通常のAI文脈読み込み対象から外した
+- 文脈整理後に「次のタスクは？」を確認し、完了済みタスクではなく文脈整理タスクが提案されることを確認
 
 ### 現在の状態
 
 - DEV_LOG.md は基本的に人間向けの日誌として扱う
 - AIには必要なときだけ、または最新日のみ渡す方針
 - TODO.md はAIが次の作業判断に使うメイン情報として扱う
+- 通常のAI文脈には TODO.md / project-plan.md / docs/DECISIONS.md を渡す
+
+### 次にやること
+
+- TODO整理エージェントの改善は一旦区切り、次の開発フェーズへ進む
+- 最新状態専用ファイルの作成は必要になった段階で再検討する
+
