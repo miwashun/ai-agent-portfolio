@@ -1,5 +1,7 @@
 # AI Agent Portfolio Project Plan
 
+全体方針・MVP・今後の方向性を確認する情報
+
 ## 1. プロジェクト概要
 
 このプロジェクトは、OpenAI APIを利用してユーザー入力に応答するCLI版AIエージェントを開発するポートフォリオです。
