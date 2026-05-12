@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from app.ai_client import generate_chat_reply
+
 app = FastAPI()
 
 
@@ -19,4 +21,5 @@ def health_check():
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    return ChatResponse(reply=f"受け取りました: {request.message}")
+    reply = generate_chat_reply(request.message)
+    return ChatResponse(reply=reply)
