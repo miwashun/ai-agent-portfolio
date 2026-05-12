@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+from fastapi.responses import FileResponse
 from app.ai_client import generate_chat_reply
 
 app = FastAPI()
@@ -13,6 +13,10 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
 
+
+@app.get("/")
+def index():
+    return FileResponse("app/static/index.html")
 
 @app.get("/health")
 def health_check():

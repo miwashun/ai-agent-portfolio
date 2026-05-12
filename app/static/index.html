@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Agent Chat</title>
+  </head>
+  <body>
+    <h1>AI Agent Chat</h1>
+
+    <div id="messages"></div>
+
+    <form id="chat-form">
+      <input id="message-input" type="text" placeholder="メッセージを入力" required />
+      <button type="submit">送信</button>
+    </form>
+
+    <script>
+      const form = document.getElementById("chat-form");
+      const input = document.getElementById("message-input");
+      const messages = document.getElementById("messages");
+
+      function addMessage(label, text) {
+        const message = document.createElement("p");
+        message.textContent = `${label}: ${text}`;
+        messages.appendChild(message);
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const userMessage = input.value.trim();
+        if (!userMessage) {
+          return;
+        }
+
+        addMessage("あなた", userMessage);
+        input.value = "";
+
+        try {
+          const response = await fetch("/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: userMessage }),
+          });
+
+          if (!response.ok) {
+            throw new Error("APIリクエストに失敗しました。");
+          }
+
+          const data = await response.json();
+          addMessage("AI", data.reply);
+        } catch (error) {
+          addMessage("エラー", error.message);
+        }
+      });
+    </script>
+  </body>
+</html>
