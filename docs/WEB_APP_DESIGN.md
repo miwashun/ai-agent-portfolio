@@ -28,3 +28,19 @@
 ## 最初のゴール
 
 CLI版と同じように、Web画面から質問してAIの返答を受け取れる状態にする。
+
+## API構成
+
+- `GET /health`
+  - サーバーの起動確認用
+- `POST /chat`
+  - ユーザーのメッセージを受け取り、AIの返答を返す
+
+## サーバー構成
+
+- `app/main.py`
+  - FastAPIアプリ本体
+  - エンドポイント定義
+- `app/ai_client.py`
+  - OpenAI APIとの接続処理
+  - Web API用のAI返答生成処理
