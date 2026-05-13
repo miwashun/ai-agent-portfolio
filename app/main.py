@@ -18,6 +18,7 @@ class ChatResponse(BaseModel):
 def index():
     return FileResponse("app/static/index.html")
 
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
