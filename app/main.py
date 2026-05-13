@@ -6,8 +6,13 @@ from app.ai_client import generate_chat_reply
 app = FastAPI()
 
 
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+
 class ChatRequest(BaseModel):
-    message: str
+    messages: list[ChatMessage]
 
 
 class ChatResponse(BaseModel):
@@ -26,5 +31,6 @@ def health_check():
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    reply = generate_chat_reply(request.message)
+    messages = [message.dict() for message in request.messages]
+    reply = generate_chat_reply(messages)
     return ChatResponse(reply=reply)
