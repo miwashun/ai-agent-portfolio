@@ -44,18 +44,16 @@ CLI版と同じように、Web画面から質問してAIの返答を受け取れ
 - `app/ai_client.py`
   - OpenAI APIとの接続処理
   - Web API用のAI返答生成処理
+- `app/web_context.py`
+  - Web版用の初期システムメッセージを作成
+  - CLI版のTODO整理用文脈とWeb版の文脈を分離
 
 ## 会話履歴
 
-### 初期実装
+### 現在の実装
 
-- 会話履歴はブラウザ画面上に表示する
-- API側は1リクエストごとの単発会話として扱う
-- OpenAI APIには、ユーザーの最新メッセージと初期システム文脈を送る
-
-### 次の実装候補
-
-- フロントエンドから過去の会話履歴も送信する
+- 会話履歴はブラウザ側の `conversationHistory` で保持する
+- フロントエンドから `/chat` に `messages` 配列を送信する
 - バックエンドは受け取った会話履歴をOpenAI APIに渡す
 - 長くなりすぎた会話履歴は、既存の `trim_conversation_history` で整理する
 
