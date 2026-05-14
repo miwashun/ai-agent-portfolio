@@ -1,6 +1,55 @@
 <!doctype html>
 <html lang="ja">
   <head>
+    <style>
+      body {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 16px;
+        font-family: system-ui, sans-serif;
+      }
+
+      #messages {
+        min-height: 300px;
+        margin-bottom: 16px;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .message {
+        margin: 8px 0;
+        padding: 8px 12px;
+        border-radius: 8px;
+        white-space: pre-wrap;
+      }
+
+      .message-user {
+        background: #eef5ff;
+      }
+
+      .message-ai {
+        background: #f4f4f4;
+      }
+
+      .message-error {
+        background: #fff0f0;
+      }
+
+      #chat-form {
+        display: flex;
+        gap: 8px;
+      }
+
+      #message-input {
+        flex: 1;
+        padding: 8px;
+      }
+
+      button {
+        padding: 8px 16px;
+      }
+    </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI Agent Chat</title>
@@ -21,8 +70,9 @@
       const messages = document.getElementById("messages");
       const conversationHistory = [];
 
-      function addMessage(label, text) {
+      function addMessage(label, text, type) {
         const message = document.createElement("p");
+        message.classList.add("message", `message-${type}`);
         message.textContent = `${label}: ${text}`;
         messages.appendChild(message);
       }
@@ -36,7 +86,7 @@
         }
 
         conversationHistory.push({ role: "user", content: userMessage });
-        addMessage("あなた", userMessage);
+        addMessage("あなた", userMessage, "user");
         input.value = "";
 
         try {
@@ -54,9 +104,9 @@
 
           const data = await response.json();
           conversationHistory.push({ role: "assistant", content: data.reply });
-          addMessage("AI", data.reply);
+          addMessage("AI", data.reply, "ai");
         } catch (error) {
-          addMessage("エラー", error.message);
+          addMessage("エラー", error.message, "error");
         }
       });
     </script>
