@@ -77,6 +77,7 @@
       const loadingMessage = document.getElementById("loading-message");
       const submitButton = form.querySelector("button");
       const conversationHistory = [];
+      let conversationId = null;
 
       function addMessage(label, text, type) {
         const message = document.createElement("p");
@@ -106,7 +107,10 @@
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ messages: conversationHistory }),
+            body: JSON.stringify({
+              conversation_id: conversationId,
+              messages: conversationHistory,
+            }),
           });
 
           if (!response.ok) {
@@ -114,6 +118,7 @@
           }
 
           const data = await response.json();
+          conversationId = data.conversation_id;
           conversationHistory.push({ role: "assistant", content: data.reply });
           addMessage("AI", data.reply, "ai");
         } catch (error) {
