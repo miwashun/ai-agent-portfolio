@@ -2,8 +2,12 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 from app.ai_client import generate_chat_reply
+from app.database import Base, engine
+from app import models
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 
 class ChatMessage(BaseModel):
