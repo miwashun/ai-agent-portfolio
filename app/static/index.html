@@ -49,6 +49,11 @@
       button {
         padding: 8px 16px;
       }
+
+      #loading-message {
+        margin: 8px 0 0;
+        color: #666;
+      }
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -63,11 +68,14 @@
       <input id="message-input" type="text" placeholder="メッセージを入力" required />
       <button type="submit">送信</button>
     </form>
+    <p id="loading-message" hidden>AIが考えています...</p>
 
     <script>
       const form = document.getElementById("chat-form");
       const input = document.getElementById("message-input");
       const messages = document.getElementById("messages");
+      const loadingMessage = document.getElementById("loading-message");
+      const submitButton = form.querySelector("button");
       const conversationHistory = [];
 
       function addMessage(label, text, type) {
@@ -88,6 +96,9 @@
         conversationHistory.push({ role: "user", content: userMessage });
         addMessage("あなた", userMessage, "user");
         input.value = "";
+        input.disabled = true;
+        submitButton.disabled = true;
+        loadingMessage.hidden = false;
 
         try {
           const response = await fetch("/chat", {
@@ -107,6 +118,11 @@
           addMessage("AI", data.reply, "ai");
         } catch (error) {
           addMessage("エラー", error.message, "error");
+        } finally {
+          input.disabled = false;
+          submitButton.disabled = false;
+          loadingMessage.hidden = true;
+          input.focus();
         }
       });
     </script>
