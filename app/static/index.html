@@ -19,6 +19,10 @@
         margin-bottom: 16px;
       }
 
+      #new-conversation-button {
+        margin-top: 8px;
+      }
+
       #message-input,
       #conversation-id-input {
         flex: 1;
@@ -73,6 +77,7 @@
     </form>
     <p id="loading-message" hidden>AIが考えています...</p>
     <p id="current-conversation-id">現在の会話ID: 未作成</p>
+    <button id="new-conversation-button" type="button">新規会話</button>
     <script>
       const form = document.getElementById("chat-form");
       const loadForm = document.getElementById("load-form");
@@ -83,6 +88,7 @@
       const submitButton = form.querySelector("button");
       const conversationHistory = [];
       const currentConversationId = document.getElementById("current-conversation-id");
+      const newConversationButton = document.getElementById("new-conversation-button");
       let conversationId = null;
 
       function addMessage(label, text, type) {
@@ -108,6 +114,15 @@
             ? "現在の会話ID: 未作成"
             : `現在の会話ID: ${conversationId}`;
       }
+
+      newConversationButton.addEventListener("click", () => {
+        conversationId = null;
+        conversationHistory.length = 0;
+        messages.innerHTML = "";
+        conversationIdInput.value = "";
+        updateCurrentConversationId();
+        input.focus();
+      });
 
       loadForm.addEventListener("submit", async (event) => {
         event.preventDefault();
