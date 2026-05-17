@@ -30,6 +30,7 @@
   - `conversation_id` を返す
 - `GET /conversations/{conversation_id}`
   - 指定した会話IDの履歴をJSONで返す
+  - 存在しない会話IDの場合は404を返す
 
 ## サーバー構成
 
@@ -54,10 +55,12 @@
 - 新規会話ボタンで画面と会話状態をリセットできる
 
 ## 会話履歴
+
 - ユーザー発言とAI返答をSQLiteに保存する
 - `GET /conversations/{conversation_id}` で保存済みの会話履歴を取得できる
 
 ### 将来の実装候補
+
 - 会話単位で履歴を再開できるようにする
 - ユーザーごとに会話履歴を分ける
 
