@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 
 from app import models
 from app.ai_client import generate_chat_reply
-from app.crud import create_conversation, create_message
+from app.crud import create_conversation, create_message, get_conversation_messages
 from app.database import Base, SessionLocal, engine
 
 app = FastAPI()
@@ -27,6 +27,16 @@ class ChatResponse(BaseModel):
     conversation_id: int
 
 
+class ConversationMessageResponse(BaseModel):
+    role: str
+    content: str
+
+
+class ConversationResponse(BaseModel):
+    conversation_id: int
+    messages: list[ConversationMessageResponse]
+
+
 @app.get("/")
 def index():
     return FileResponse("app/static/index.html")
@@ -35,6 +45,25 @@ def index():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+@app.get("/conversations/{conversation_id}", response_model=ConversationResponse)
+def get_conversation(conversation_id: int):
+    db = SessionLocal()
+    try:
+        messages = get_conversation_messages(db, conversation_id)
+        return ConversationResponse(
+            conversation_id=conversation_id,
+            messages=[
+                ConversationMessageResponse(
+                    role=message.role,
+                    content=message.content,
+                )
+                for message in messages
+            ],
+        )
+    finally:
+        db.close()
 
 
 @app.post("/chat", response_model=ChatResponse)
