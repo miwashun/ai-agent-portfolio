@@ -1,10 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 
 from app import models
 from app.ai_client import generate_chat_reply
-from app.crud import create_conversation, create_message, get_conversation_messages
+from app.crud import create_conversation, create_message, get_conversation, get_conversation_messages
 from app.database import Base, SessionLocal, engine
 
 app = FastAPI()
@@ -48,9 +48,13 @@ def health_check():
 
 
 @app.get("/conversations/{conversation_id}", response_model=ConversationResponse)
-def get_conversation(conversation_id: int):
+def read_conversation(conversation_id: int):
     db = SessionLocal()
     try:
+        conversation = get_conversation(db, conversation_id)
+        if conversation is None:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+
         messages = get_conversation_messages(db, conversation_id)
         return ConversationResponse(
             conversation_id=conversation_id,
