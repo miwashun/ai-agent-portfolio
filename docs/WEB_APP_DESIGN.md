@@ -22,6 +22,10 @@
   - サーバーの起動確認用
 - `POST /chat`
   - ユーザーの会話履歴を受け取り、AIの返答を返す
+  - ユーザー発言とAI返答をDBに保存する
+  - `conversation_id` を返す
+- `GET /conversations/{conversation_id}`
+  - 指定した会話IDの履歴をJSONで返す
 
 ## サーバー構成
 
@@ -81,3 +85,5 @@
   - 1つの発言を表す
   - `role` と `content` を持つ
   - `Conversation` に紐づく
+- 会話履歴はSQLiteに保存する
+- `Conversation` と `Message` をSQLAlchemyモデルとして定義する
