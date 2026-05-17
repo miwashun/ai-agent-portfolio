@@ -9,12 +9,20 @@
         font-family: system-ui, sans-serif;
       }
 
-      #messages {
-        min-height: 300px;
+      #chat-form,
+      #load-form {
+        display: flex;
+        gap: 8px;
+      }
+
+      #load-form {
         margin-bottom: 16px;
-        padding: 16px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+      }
+
+      #message-input,
+      #conversation-id-input {
+        flex: 1;
+        padding: 8px;
       }
 
       .message {
@@ -36,16 +44,6 @@
         background: #fff0f0;
       }
 
-      #chat-form {
-        display: flex;
-        gap: 8px;
-      }
-
-      #message-input {
-        flex: 1;
-        padding: 8px;
-      }
-
       button {
         padding: 8px 16px;
       }
@@ -62,6 +60,11 @@
   <body>
     <h1>AI Agent Chat</h1>
 
+    <form id="load-form">
+      <input id="conversation-id-input" type="number" placeholder="会話ID" min="1" />
+      <button type="submit">履歴を読み込む</button>
+    </form>
+
     <div id="messages"></div>
 
     <form id="chat-form">
@@ -72,7 +75,9 @@
 
     <script>
       const form = document.getElementById("chat-form");
+      const loadForm = document.getElementById("load-form");
       const input = document.getElementById("message-input");
+      const conversationIdInput = document.getElementById("conversation-id-input");
       const messages = document.getElementById("messages");
       const loadingMessage = document.getElementById("loading-message");
       const submitButton = form.querySelector("button");
@@ -85,6 +90,42 @@
         message.textContent = `${label}: ${text}`;
         messages.appendChild(message);
       }
+
+      function renderConversationHistory() {
+        messages.innerHTML = "";
+
+        for (const message of conversationHistory) {
+          const label = message.role === "user" ? "あなた" : "AI";
+          const type = message.role === "user" ? "user" : "ai";
+          addMessage(label, message.content, type);
+        }
+      }
+
+      loadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const requestedConversationId = conversationIdInput.value.trim();
+        if (!requestedConversationId) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/conversations/${requestedConversationId}`);
+
+          if (!response.ok) {
+            throw new Error("会話履歴の読み込みに失敗しました。");
+          }
+
+          const data = await response.json();
+          conversationId = data.conversation_id;
+          conversationHistory.length = 0;
+          conversationHistory.push(...data.messages);
+          renderConversationHistory();
+          input.focus();
+        } catch (error) {
+          addMessage("エラー", error.message, "error");
+        }
+      });
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
