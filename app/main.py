@@ -2,27 +2,20 @@ from typing import cast
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from sqlalchemy.orm import Session
+
 from app import models  # noqa: F401
-from app.ai_client import generate_chat_reply
-from app.crud import (
-    create_conversation,
-    create_message,
-    get_conversation,
-    get_conversation_messages,
-)
+from app.crud import get_conversation, get_conversation_messages
 from app.database import Base, engine
 from app.dependencies import get_db
-from sqlalchemy.orm import Session
-from app.schemas import (
-    ChatRequest,
-    ChatResponse,
-    ConversationMessageResponse,
-    ConversationResponse,
-)
+from app.routes.chat import router as chat_router
+from app.schemas import ConversationMessageResponse, ConversationResponse
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
+
+app.include_router(chat_router)
 
 
 @app.get("/")
@@ -52,31 +45,3 @@ def read_conversation(conversation_id: int, db: Session = Depends(get_db)):
             for message in messages
         ],
     )
-
-
-@app.post("/chat", response_model=ChatResponse)
-def chat(request: ChatRequest, db: Session = Depends(get_db)):
-    conversation_id = request.conversation_id
-    if conversation_id is None:
-        conversation = create_conversation(db)
-        conversation_id = cast(int, conversation.id)
-
-    latest_user_message = request.messages[-1]
-    create_message(
-        db,
-        conversation_id=conversation_id,
-        role=latest_user_message.role,
-        content=latest_user_message.content,
-    )
-
-    messages = [message.dict() for message in request.messages]
-    reply = generate_chat_reply(messages)
-
-    create_message(
-        db,
-        conversation_id=conversation_id,
-        role="assistant",
-        content=reply,
-    )
-
-    return ChatResponse(reply=reply, conversation_id=conversation_id)
