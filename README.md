@@ -119,7 +119,8 @@ black .
 - CLI版の起動処理はルート直下の `main.py` に置く
 - CLI版の主要処理は `src/` 配下に責務ごとに分離している
 - Web版の主要処理は `app/` 配下に分離している
-- Web版のAPIエンドポイントは `app/main.py` に定義している
+- Web版のAPIエンドポイントは `app/routes/` 配下に分離している
+- `app/main.py` はFastAPIアプリ本体とrouter登録を担当する
 - Web版のAI応答生成処理は `app/ai_client.py` に分離している
 - Web版の初期文脈は `app/web_context.py` に分離している
 - APIのリクエスト/レスポンス定義は `app/schemas.py` に分離している
@@ -158,6 +159,9 @@ black .
 │   ├── models.py
 │   ├── schemas.py
 │   ├── web_context.py
+│   ├── routes/
+│   │   ├── chat.py
+│   │   └── conversations.py
 │   └── static/
 │       └── index.html
 ├── src/
