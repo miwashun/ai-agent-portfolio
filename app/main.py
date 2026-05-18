@@ -1,3 +1,5 @@
+from typing import cast
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 
@@ -40,8 +42,8 @@ def read_conversation(conversation_id: int, db: Session = Depends(get_db)):
         conversation_id=conversation_id,
         messages=[
             ConversationMessageResponse(
-                role=message.role,
-                content=message.content,
+                role=cast(str, message.role),
+                content=cast(str, message.content),
             )
             for message in messages
         ],
@@ -53,7 +55,7 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
     conversation_id = request.conversation_id
     if conversation_id is None:
         conversation = create_conversation(db)
-        conversation_id = conversation.id
+        conversation_id = cast(int, conversation.id)
 
     latest_user_message = request.messages[-1]
     create_message(
