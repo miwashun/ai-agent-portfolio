@@ -1,40 +1,20 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from fastapi.responses import FileResponse
 
 from app import models
 from app.ai_client import generate_chat_reply
 from app.crud import create_conversation, create_message, get_conversation, get_conversation_messages
 from app.database import Base, SessionLocal, engine
+from app.schemas import (
+    ChatRequest,
+    ChatResponse,
+    ConversationMessageResponse,
+    ConversationResponse,
+)
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
-
-
-class ChatMessage(BaseModel):
-    role: str
-    content: str
-
-
-class ChatRequest(BaseModel):
-    conversation_id: int | None = None
-    messages: list[ChatMessage]
-
-
-class ChatResponse(BaseModel):
-    reply: str
-    conversation_id: int
-
-
-class ConversationMessageResponse(BaseModel):
-    role: str
-    content: str
-
-
-class ConversationResponse(BaseModel):
-    conversation_id: int
-    messages: list[ConversationMessageResponse]
 
 
 @app.get("/")
