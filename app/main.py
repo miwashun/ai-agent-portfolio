@@ -2,10 +2,14 @@ from typing import cast
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse
-
-from app import models
+from app import models  # noqa: F401
 from app.ai_client import generate_chat_reply
-from app.crud import create_conversation, create_message, get_conversation, get_conversation_messages
+from app.crud import (
+    create_conversation,
+    create_message,
+    get_conversation,
+    get_conversation_messages,
+)
 from app.database import Base, engine
 from app.dependencies import get_db
 from sqlalchemy.orm import Session

@@ -10,7 +10,9 @@ from src.doc_suggestions import create_doc_suggestions
 
 
 def run_todo_agent_chat_loop(client) -> None:
-    print("AIエージェントを開始します。終了するには exit または quit と入力してください。")
+    print(
+        "AIエージェントを開始します。終了するには exit または quit と入力してください。"
+    )
     conversation_history = create_initial_conversation_history()
     stats = create_execution_stats()
 

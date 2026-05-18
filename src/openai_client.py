@@ -1,5 +1,3 @@
-
-
 import os
 from typing import Any, cast
 
@@ -25,7 +23,9 @@ def create_openai_client() -> OpenAI:
     return OpenAI(api_key=api_key)
 
 
-def generate_ai_response(client: OpenAI, conversation_history: list[dict[str, str]]) -> str:
+def generate_ai_response(
+    client: OpenAI, conversation_history: list[dict[str, str]]
+) -> str:
     response = client.responses.create(
         model=MODEL_NAME,
         input=cast(Any, conversation_history),

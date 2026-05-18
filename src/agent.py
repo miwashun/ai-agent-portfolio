@@ -5,7 +5,9 @@ from src.config import (
 from src.context import create_system_message
 
 
-def trim_conversation_history(conversation_history: list[dict[str, str]]) -> list[dict[str, str]]:
+def trim_conversation_history(
+    conversation_history: list[dict[str, str]],
+) -> list[dict[str, str]]:
     return conversation_history[-MAX_HISTORY_LENGTH:]
 
 

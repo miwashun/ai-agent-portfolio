@@ -15,7 +15,9 @@ def get_conversation(db: Session, conversation_id: int) -> Conversation | None:
     return db.query(Conversation).filter(Conversation.id == conversation_id).first()
 
 
-def create_message(db: Session, conversation_id: int, role: str, content: str) -> Message:
+def create_message(
+    db: Session, conversation_id: int, role: str, content: str
+) -> Message:
     message = Message(
         conversation_id=conversation_id,
         role=role,

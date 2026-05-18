@@ -1,4 +1,4 @@
-from src.config import PROJECT_CONTEXT_FILES, WEB_AGENT_SYSTEM_MESSAGE
+from src.config import WEB_AGENT_SYSTEM_MESSAGE
 from src.context import create_project_context
 
 
