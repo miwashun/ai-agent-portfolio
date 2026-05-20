@@ -36,7 +36,17 @@
 
 - `app/main.py`
   - FastAPIアプリ本体
-  - エンドポイント定義
+  - DBテーブル作成
+  - 各routerの登録
+- `app/routes/chat.py`
+  - `/chat` エンドポイント定義
+- `app/routes/conversations.py`
+  - `/conversations/{conversation_id}` エンドポイント定義
+- `app/routes/pages.py`
+  - `/` エンドポイント定義
+  - チャット画面を返す
+- `app/routes/health.py`
+  - `/health` エンドポイント定義
 - `app/ai_client.py`
   - OpenAI APIとの接続処理
   - Web API用のAI返答生成処理
