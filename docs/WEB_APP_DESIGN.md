@@ -64,6 +64,15 @@
 - 現在の会話IDを画面に表示する
 - 新規会話ボタンで画面と会話状態をリセットできる
 
+## フロントエンド構成方針
+
+- 初期段階では `app/static/index.html` の静的HTMLとJavaScriptで動作確認を優先する
+- Web版の基本機能が固まった後、Next.jsへ移行する
+- Next.jsアプリは `frontend/` に配置する
+- FastAPIはAI API呼び出し、DB保存、会話履歴取得を担当する
+- Next.jsは画面表示、入力フォーム、会話履歴表示、API呼び出しを担当する
+- Next.js移行後もAPIキーはFastAPI側だけで扱う
+
 ## 会話履歴
 
 - ユーザー発言とAI返答をSQLiteに保存する
