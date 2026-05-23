@@ -75,6 +75,8 @@
 - Next.jsアプリの初期構成は `frontend/` に作成済み
 - Next.jsフロントエンドからFastAPIの `/chat` APIを呼び出せる
 - CORS設定で `localhost:3000` / `localhost:3001` からのリクエストを許可する
+- Next.js画面で会話IDを指定して保存済み会話履歴を読み込める
+- Next.js画面で新規会話ボタンにより会話状態をリセットできる
 
 ## 会話履歴
 
