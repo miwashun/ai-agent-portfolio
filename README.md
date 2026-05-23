@@ -44,11 +44,26 @@ python main.py
 
 ## Web版の起動方法
 
+バックエンドを起動します。
+
 ```bash
 uvicorn app.main:app --reload
 ```
 
+別ターミナルでフロントエンドを起動します。
+
+```bash
+cd frontend
+npm run dev
+```
+
 ブラウザで以下を開きます。
+
+```txt
+http://localhost:3000/
+```
+
+静的HTML版の画面を確認する場合は、バックエンド起動後に以下を開きます。
 
 ```txt
 http://127.0.0.1:8000/
@@ -107,6 +122,8 @@ black .
 - Python
 - FastAPI
 - OpenAI API
+- Next.js
+- TypeScript
 - SQLite
 - SQLAlchemy
 - python-dotenv
@@ -161,7 +178,9 @@ black .
 │   ├── web_context.py
 │   ├── routes/
 │   │   ├── chat.py
-│   │   └── conversations.py
+│   │   ├── conversations.py
+│   │   ├── health.py
+│   │   └── pages.py
 │   └── static/
 │       └── index.html
 ├── src/
@@ -177,6 +196,14 @@ black .
 │   ├── todo_candidates.py
 │   ├── command_suggestions.py
 │   └── doc_suggestions.py
+├── frontend/
+│   ├── src/
+│   │   └── app/
+│   ├── public/
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── next.config.ts
+│   └── tsconfig.json
 ├── docs/
 │   ├── DEV_LOG.md
 │   ├── DECISIONS.md
