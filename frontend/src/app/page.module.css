@@ -53,6 +53,7 @@
   white-space: pre-wrap;
 }
 
+.loadForm,
 .chatForm {
   display: flex;
   width: 100%;
@@ -81,6 +82,12 @@
   background: #333;
 }
 
+.submitButton:disabled,
+.messageInput:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 600px) {
   .page {
     padding: 24px 12px;
@@ -90,6 +97,7 @@
     font-size: 28px;
   }
 
+  .loadForm,
   .chatForm {
     flex-direction: column;
   }
