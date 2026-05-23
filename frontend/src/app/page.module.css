@@ -78,8 +78,23 @@
   cursor: pointer;
 }
 
+.secondaryButton {
+  width: fit-content;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  cursor: pointer;
+}
+
 .submitButton:hover {
   background: #333;
+}
+
+.secondaryButton:hover {
+  background: #f4f4f4;
 }
 
 .submitButton:disabled,

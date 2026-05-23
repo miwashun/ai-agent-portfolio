@@ -28,6 +28,15 @@ export default function Home() {
     return apiBaseUrl;
   }
 
+  function handleNewConversation() {
+    setInputMessage("");
+    setMessages([
+      { role: "assistant", content: "ここに会話履歴を表示します。" },
+    ]);
+    setConversationId(null);
+    setLoadConversationId("");
+  }
+
   async function handleLoadConversation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -132,6 +141,13 @@ export default function Home() {
           <p>
             現在の会話ID: {conversationId === null ? "未作成" : conversationId}
           </p>
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={handleNewConversation}
+          >
+            新規会話
+          </button>
         </div>
 
         <form className={styles.loadForm} onSubmit={handleLoadConversation}>
