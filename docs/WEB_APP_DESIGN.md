@@ -73,6 +73,8 @@
 - Next.jsは画面表示、入力フォーム、会話履歴表示、API呼び出しを担当する
 - Next.js移行後もAPIキーはFastAPI側だけで扱う
 - Next.jsアプリの初期構成は `frontend/` に作成済み
+- Next.jsフロントエンドからFastAPIの `/chat` APIを呼び出せる
+- CORS設定で `localhost:3000` / `localhost:3001` からのリクエストを許可する
 
 ## 会話履歴
 
