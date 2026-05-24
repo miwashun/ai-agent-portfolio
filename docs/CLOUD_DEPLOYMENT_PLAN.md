@@ -196,6 +196,24 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - AWSコンソールで手動作成した場合は、必ずIaC化するか削除する
 - Terraform管理外のリソースが残っていないか、面接後に確認する
 
+## destroy後に残りやすいもの
+
+- RDSスナップショット
+- S3バケット内のオブジェクト
+- CloudWatch Logs
+- Elastic IP
+- Secrets Managerのシークレット
+- Route 53 / 独自ドメイン関連
+- Terraform state
+- 手動作成したリソース
+
+### 確認方針
+
+- `terraform destroy` 後にAWSコンソールで残リソースを確認する
+- 課金が発生し得るリソースを優先して確認する
+- S3やログなど、実行環境以外の残存リソースも確認する
+- Terraform stateや秘密情報の扱いも確認する
+
 ## まだ実行しないこと
 
 - RDS作成
