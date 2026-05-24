@@ -245,6 +245,31 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - 100% 到達時に通知する
 - 予測コストが上限を超えそうな場合も通知する
 
+## Terraform最小構成案
+
+### 初期候補
+
+- Frontend: Vercel または AWS側の軽量公開構成
+- Backend: AWS App Runner または Lightsail
+- Database: 初期はSQLiteまたは軽量DB
+- Secrets: OpenAI APIキーはクラウド側の環境変数またはSecrets管理
+- Logs: 最小限にする
+- Domain: 初期段階では独自ドメインを使わない
+
+### 初期構成で避けるもの
+
+- RDS
+- ALB
+- NAT Gateway
+- ECS/Fargateの本格構成
+- 常時稼働の高額DB
+- 複雑なVPC構成
+- 本番独自ドメイン
+
+### 採用判断
+
+初回は「面接デモ用に短時間だけ公開でき、面接後に確実に削除できること」を最優先にする。
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -257,6 +282,5 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- Terraform構成の最小案を作る
 - デプロイ前チェックリストを作る
 - AWS Budgetsを実際に設定する
