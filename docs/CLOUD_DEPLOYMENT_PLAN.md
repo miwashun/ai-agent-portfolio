@@ -102,6 +102,25 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - 不要なログ出力
 - フロントエンド公開設定
 
+## 削除手順の方針
+
+- 面接デモ環境は面接後に削除する
+- 削除はIaCの `destroy` を基本にする
+- 手動で作ったリソースを残さない
+- IaC管理外のリソースがないか確認する
+- 削除後にAWSコンソールで残リソースを確認する
+- 削除後にAWS Billing / Cost Explorerで課金状況を確認する
+
+## 削除対象候補
+
+- App Runner / ECS / Lightsail などの実行環境
+- RDS / DB / スナップショット
+- S3バケットとオブジェクト
+- CloudWatch Logs
+- Elastic IP
+- Secrets Managerのシークレット
+- Route 53 / 独自ドメイン関連
+
 ## まだ実行しないこと
 
 - RDS作成
