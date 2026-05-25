@@ -29,13 +29,13 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 ### 候補A: フロントエンド Vercel + バックエンド AWS
 
 - Frontend: Vercel
-- Backend: AWS App Runner または Lightsail
+- Backend: Lightsail または ECS Express Mode
 - Database: 初期はSQLiteまたは軽量DB、将来的にRDS/PostgreSQL
 
 ### 候補B: AWSに寄せる構成
 
 - Frontend: S3 + CloudFront または Amplify
-- Backend: App Runner または Lightsail
+- Backend: Lightsail または ECS Express Mode
 - Database: RDS または外部DB
 
 ### 候補C: 最小コスト検証構成
@@ -59,7 +59,7 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 最初に設定する安全策
 
-- AWS Budgetsを設定する
+- AWS Budgets設定済みであることを確認する
 - Zero Spend Budgetまたは低額予算アラートを設定する
 - 請求アラート用メールを確認する
 - 不要リソースの削除手順を作る
@@ -78,7 +78,8 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 面接後の削除確認チェック
 
-- App Runner / ECS / Lightsail などの実行環境が残っていない
+- Lightsail / ECS Express Mode などの実行環境が残っていない
+- 過去にApp Runnerを作成していないかも確認する
 - RDS / DB / スナップショットが残っていない
 - S3バケットと中身が残っていない
 - CloudWatch Logsが不要に残っていない
@@ -97,7 +98,8 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 停止対象候補
 
-- App Runner / ECS / Lightsail などの実行環境
+- Lightsail / ECS Express Mode などの実行環境
+- 過去に作成したApp Runnerサービス
 - RDSなどのDB
 - 不要なログ出力
 - フロントエンド公開設定
@@ -250,7 +252,7 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 ### 初期候補
 
 - Frontend: Vercel または AWS側の軽量公開構成
-- Backend: AWS App Runner または Lightsail
+- Backend: Lightsail または ECS Express Mode
 - Database: 初期はSQLiteまたは軽量DB
 - Secrets: OpenAI APIキーはクラウド側の環境変数またはSecrets管理
 - Logs: 最小限にする
@@ -331,14 +333,12 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 初期デモ構成の比較
 
-### Vercel + App Runner
+### 除外候補: Vercel + App Runner
 
-- フロントエンドはVercelに置く
-- バックエンドはAWS App Runnerで動かす
-- コンテナ化したFastAPIを動かしやすい
-- AWS側の実行環境をIaC管理しやすい
-- ただし、常時稼働やログ保存による課金に注意する
-- SQLiteを使う場合、永続化や再デプロイ時の扱いに注意する
+- App Runnerは2026年4月30日以降、新規顧客受付停止のため初期候補から外す
+- 既存サービスは継続利用できるが、このプロジェクトでは新規採用しない
+- AWS公式推奨はECS Express Mode
+- 以前はコンテナ化したFastAPIを動かしやすい候補だったが、今後の新規採用先としては扱わない
 
 ### Vercel + Lightsail
 
@@ -349,18 +349,29 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - ただし、停止・削除・OS管理・セキュリティ更新を自分で意識する必要がある
 - Terraformで管理する場合、作成後のサーバー内設定も別途考える必要がある
 
+### Vercel + ECS Express Mode
+
+- フロントエンドはVercelに置く
+- バックエンドはECS Express Modeで動かす
+- App Runnerの代替候補としてAWSが推奨している
+- コンテナ化したFastAPIを動かせる候補になる
+- ただし、Fargate / ALB / Networking などを含む可能性があるため、低額デモ構成では費用確認を必須にする
+- 初期段階では月額 $5 のBudgetsを超えないか慎重に確認する
+
 ### 初期判断
 
 - 最初は本格的な常時運用ではなく、面接デモ用の一時公開を前提にする
-- App Runnerはコンテナ化とIaC管理の練習に向いている
 - Lightsailは月額の読みやすさはあるが、サーバー管理の責任が増える
-- まずはApp Runnerを第一候補、Lightsailを比較候補として扱う
+- App Runnerは2026年4月30日以降、新規顧客受付停止のため初期候補から外す
+- AWS公式推奨はECS Express Mode
+- ただしECS Express ModeはFargate / ALB / Networkingを含むため、低額デモ構成では費用確認を必須にする
+- 初期デモ候補は Vercel + Lightsail を第一候補、Vercel + ECS Express Mode を比較候補にする
 
 ## まだ実行しないこと
 
 - RDS作成
 - ALB作成
-- ECS/Fargate構成
+- ALB / ECS / Fargate を組み合わせた本格構成
 - 本番ドメイン設定
 - 常時稼働の高額構成
 - 自動スケール設定
@@ -368,7 +379,7 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- App Runner構成の月額見積もりを確認する
 - Lightsail構成の月額見積もりを確認する
+- ECS Express Mode構成の月額見積もりを確認する
 - 採用する初期デモ構成を最終決定する
 - Terraform実装に進む前の作成リソースを最終確定する
