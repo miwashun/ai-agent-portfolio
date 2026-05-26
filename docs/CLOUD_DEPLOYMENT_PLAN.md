@@ -367,6 +367,15 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - ただしECS Express ModeはFargate / ALB / Networkingを含むため、低額デモ構成では費用確認を必須にする
 - 初期デモ候補は Vercel + Lightsail を第一候補、Vercel + ECS Express Mode を比較候補にする
 
+## Lightsail構成の月額見積もり
+
+- Linux/Unixの最小構成は、IPv6のみで月額 $3.50 から
+- パブリックIPv4ありの最小構成は月額 $5 から
+- $5/月プランは、0.5GBメモリ、2 vCPU、20GB SSD、1TB転送
+- 月額 $5 のBudgets上限に近いため、追加料金に注意する
+- 初期デモではスナップショット、静的IP、独自ドメイン、追加ストレージは使わない
+- OpenAI API利用料はAWSとは別枠で管理する
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -380,6 +389,4 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 ## 次にやること
 
 - Lightsail構成の月額見積もりを確認する
-- ECS Express Mode構成の月額見積もりを確認する
-- 採用する初期デモ構成を最終決定する
-- Terraform実装に進む前の作成リソースを最終確定する
+
