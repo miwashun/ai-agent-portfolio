@@ -384,6 +384,28 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - ECS / ALB / RDS を含む本格構成は、月額 $5 ではなく、短時間検証または別予算枠で扱う
 - 初期デモ構成は、月額固定で読みやすいLightsailを第一候補にする
 
+## ECS Express Mode構成の月額見積もりメモ
+
+- ECS Express Mode自体に追加料金はない
+- 作成される基盤リソースに対して課金される
+- 主な課金対象は Fargate、Application Load Balancer、CloudWatch Logs / Metrics、データ転送、ECR など
+- Fargateは vCPU、メモリ、ストレージ、タスク実行時間に応じて課金される
+- Application Load Balancerはロードバランサー時間とLCU使用量で課金される
+- ALBが含まれるため、月額 $5 のBudgets上限とは相性が悪い可能性が高い
+- 低額の面接デモ用途では、Lightsailより費用が読みづらい
+- 実務寄りの構成としての学習価値はあるが、初期デモ構成の第一候補にはしない
+
+## 採用する初期デモ構成
+
+- 初期デモ構成は `Vercel + Lightsail` を採用する
+- フロントエンドはVercelにデプロイする
+- バックエンドはLightsail上でFastAPIを動かす
+- DBは初期段階ではSQLiteまたは軽量DBを使う
+- RDS、ALB、NAT Gateway、独自ドメインは初期段階では使わない
+- Lightsailは月額が読みやすく、面接デモ用の一時公開に向いている
+- ECS Express Modeは実務寄りの比較候補として残すが、初期デモ構成には採用しない
+- App Runnerは新規顧客受付停止のため採用しない
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -396,6 +418,6 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- ECS Express Mode構成の月額見積もりを確認する
-- 採用する初期デモ構成を最終決定する
 - Terraform実装に進む前の作成リソースを最終確定する
+- Vercel + Lightsail 構成のデプロイ手順を設計する
+- Lightsail作成前に削除手順と残リソース確認手順を再確認する
