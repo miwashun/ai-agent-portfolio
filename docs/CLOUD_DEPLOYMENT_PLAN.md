@@ -406,6 +406,56 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - ECS Express Modeは実務寄りの比較候補として残すが、初期デモ構成には採用しない
 - App Runnerは新規顧客受付停止のため採用しない
 
+## Terraform実装前の作成リソース最終確定
+
+### 初期デモ構成で作成するリソース
+
+- Vercelプロジェクト
+- Vercel側の環境変数 `NEXT_PUBLIC_API_BASE_URL`
+- Lightsailインスタンス
+- Lightsail上のFastAPI実行環境
+- Lightsail上のSQLiteデータ保存領域
+- Lightsail上のバックエンド用環境変数
+- 必要最小限のファイアウォール設定
+- 必要最小限のログ確認手段
+
+### Terraformで管理する候補
+
+- Lightsailインスタンス
+- Lightsailのファイアウォール設定
+- 必要に応じたSSHキーまたは接続設定
+
+### Terraform管理外にする候補
+
+- Vercelプロジェクト
+- Vercel側の環境変数
+- OpenAI APIキーそのもの
+- ローカルの `.env` ファイル
+- Terraform stateに入れるべきではない秘密情報
+
+### 初期デモ構成では作成しないリソース
+
+- RDS
+- ALB
+- NAT Gateway
+- ECS / Fargate の本格構成
+- ECS Express Mode
+- App Runner
+- 独自ドメイン
+- Route 53 Hosted Zone
+- 常時稼働の高額DB
+- 複雑なVPC構成
+- S3 / CloudFrontによる本番フロントエンド配信
+
+### 注意点
+
+- Lightsailインスタンスは月額課金のため、面接後は削除する
+- 停止だけでは課金が残る可能性があるため、削除手順を優先する
+- SQLiteを使う場合、インスタンス削除でデータも失われる前提にする
+- 初期デモではデモ用データのみを扱う
+- OpenAI APIキーはフロントエンドに出さない
+- VercelとLightsailを接続するため、バックエンドURLをVercel環境変数に設定する
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -418,6 +468,6 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- Terraform実装に進む前の作成リソースを最終確定する
 - Vercel + Lightsail 構成のデプロイ手順を設計する
 - Lightsail作成前に削除手順と残リソース確認手順を再確認する
+- Terraformで管理する範囲と手動設定する範囲を最終確認する
