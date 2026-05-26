@@ -456,6 +456,40 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - OpenAI APIキーはフロントエンドに出さない
 - VercelとLightsailを接続するため、バックエンドURLをVercel環境変数に設定する
 
+## Vercel + Lightsail 構成のデプロイ手順案
+
+### 事前確認
+
+- `git status` が `working tree clean` であることを確認する
+- AWS Budgetsが月額 $5 で設定済みであることを確認する
+- OpenAI APIキーをフロントエンドに置かないことを確認する
+- `.env` や秘密情報をGit管理していないことを確認する
+
+### バックエンド側
+
+- TerraformでLightsailインスタンスを作成する
+- 必要最小限のファイアウォールを設定する
+- LightsailにSSH接続できることを確認する
+- Python実行環境を用意する
+- FastAPIアプリを配置する
+- バックエンド用環境変数を設定する
+- UvicornでFastAPIを起動する
+- `/chat` やヘルスチェック用APIにアクセスできることを確認する
+
+### フロントエンド側
+
+- Vercelプロジェクトを作成する
+- VercelにNext.jsフロントエンドをデプロイする
+- `NEXT_PUBLIC_API_BASE_URL` にLightsail上のバックエンドURLを設定する
+- Vercel上の画面からFastAPI APIへ接続できることを確認する
+
+### デモ後
+
+- Vercel側の公開設定を確認する
+- Terraform destroy または削除手順でLightsailリソースを削除する
+- Lightsailインスタンス、静的IP、スナップショット、ログなどが残っていないことを確認する
+- AWS Billing / Cost Explorerで課金が増え続けていないことを確認する
+
 ## まだ実行しないこと
 
 - RDS作成
