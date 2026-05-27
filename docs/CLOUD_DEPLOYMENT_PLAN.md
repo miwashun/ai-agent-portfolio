@@ -490,6 +490,31 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - Lightsailインスタンス、静的IP、スナップショット、ログなどが残っていないことを確認する
 - AWS Billing / Cost Explorerで課金が増え続けていないことを確認する
 
+## Terraformで管理する範囲と手動設定する範囲
+
+### Terraformで管理する
+
+- Lightsailインスタンス
+- Lightsailのファイアウォール設定
+- 必要に応じたSSHキー設定
+
+### 手動または別管理にする
+
+- Vercelプロジェクト
+- Vercel側の環境変数 `NEXT_PUBLIC_API_BASE_URL`
+- OpenAI APIキー
+- Lightsail内のアプリ配置
+- Lightsail内のPython環境構築
+- Uvicorn / systemd などの起動設定
+- `.env` ファイル
+
+### 方針
+
+- Terraformには秘密情報を直接書かない
+- Terraform stateに秘密情報が入らないようにする
+- 初期段階ではLightsailの作成・削除をTerraformの主目的にする
+- アプリ配置の自動化は後の改善対象にする
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -503,4 +528,3 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 ## 次にやること
 
 - Lightsail作成前に削除手順と残リソース確認手順を再確認する
-- Terraformで管理する範囲と手動設定する範囲を最終確認する
