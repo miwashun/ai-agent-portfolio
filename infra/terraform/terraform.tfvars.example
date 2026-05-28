@@ -1,0 +1,7 @@
+
+
+aws_region        = "ap-northeast-1"
+availability_zone = "ap-northeast-1a"
+instance_name     = "ai-agent-portfolio-demo"
+blueprint_id      = "ubuntu_22_04"
+bundle_id         = "nano_3_0"
