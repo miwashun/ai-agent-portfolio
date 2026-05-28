@@ -5,3 +5,13 @@ __pycache__/
 node_modules/
 .DS_Store
 data/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.tfvars
+.terraform.lock.hcl
+crash.log
+crash.*.log
