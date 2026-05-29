@@ -79,3 +79,10 @@ terraform destroy
 ## 注意
 
 AWS Budgetsは月額 $5 の通知用アラートとして設定済み。ただし、自動停止ではないため、削除確認は手動で行う。
+
+## 確認済みのLightsail設定
+
+- `bundle_id = "nano_3_0"` は、Linux/Unix の月額 $5 プランとして確認済み
+- `nano_3_0` はパブリックIPv4を1つ含む
+- `blueprint_id = "ubuntu_22_04"` は、Ubuntu 22.04 LTS の有効なBlueprintとして確認済み
+- IPv6のみの `nano_ipv6_3_0` は月額 $3.50 だが、初期デモでは通常のブラウザアクセスを優先して採用しない
