@@ -238,3 +238,31 @@
 - ECS Express Mode構成の月額見積もりを確認する
 - 採用する初期デモ構成を最終決定する
 - Terraform実装に進む前の作成リソースを最終確定する
+
+## 2026-05-29
+
+### 実施したこと
+
+- `infra/terraform/` を作成
+- Terraform用のREADMEを追加
+- `.gitignore` にTerraform関連の除外設定を追加
+- `.terraform.lock.hcl` はGit管理する方針に修正
+- Lightsail用のTerraform最小構成を追加
+- `bundle_id = "nano_3_0"` がIPv4ありの月額 $5 Linux/Unixプランであることを確認
+- `blueprint_id = "ubuntu_22_04"` が有効なUbuntu 22.04 LTS Blueprintであることを確認
+- `terraform init` / `terraform fmt` / `terraform validate` を実行し成功
+- `terraform plan` を実行し、作成予定がLightsailインスタンス1件のみであることを確認
+
+### 現在の状態
+
+- Terraform構成は文法的に有効
+- `terraform plan` は成功済み
+- `terraform apply` はまだ実行していない
+- AWSリソースはまだ作成していない
+- 作成予定リソースは `aws_lightsail_instance.backend` の1件のみ
+
+### 次にやること
+
+- `terraform apply` を実行する前に、最終確認を行う
+- Lightsail作成後のセットアップ手順を整理する
+- 面接デモ後の `terraform destroy` と残リソース確認手順を再確認する
