@@ -12,6 +12,5 @@ data/
 *.tfstate.*
 terraform.tfvars
 *.tfvars
-.terraform.lock.hcl
 crash.log
 crash.*.log
