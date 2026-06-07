@@ -29,3 +29,15 @@ variable "bundle_id" {
   type        = string
   default     = "nano_3_0"
 }
+
+variable "key_pair_name" {
+  description = "Name of the Lightsail SSH key pair."
+  type        = string
+  default     = "ai-agent-lightsail-demo-key"
+}
+
+variable "public_key_path" {
+  description = "Path to the public SSH key used for Lightsail access."
+  type        = string
+  default     = "~/.ssh/ai-agent-lightsail-demo.pub"
+}

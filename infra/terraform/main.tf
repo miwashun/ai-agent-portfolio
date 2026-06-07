@@ -20,10 +20,15 @@ resource "aws_lightsail_instance" "backend" {
   availability_zone = var.availability_zone
   blueprint_id      = var.blueprint_id
   bundle_id         = var.bundle_id
-
+  key_pair_name     = aws_lightsail_key_pair.demo.name
   tags = {
     Project     = "ai-agent-portfolio"
     Environment = "demo"
     ManagedBy   = "terraform"
   }
+}
+
+resource "aws_lightsail_key_pair" "demo" {
+  name       = var.key_pair_name
+  public_key = file(pathexpand(var.public_key_path))
 }
