@@ -1,268 +1,211 @@
 # Development Log
 
-- 基本は人間向けの日誌。AIには必要なときだけ、または最新日のみ渡す
+## 運用方針
+
+- このファイルは人間向けの開発日誌として扱う
+- 細かい作業ログではなく、機能単位・設計判断・検証結果・失敗から得た知見を記録する
 - 古い「次にやること」は当時の予定として残す
-- 最新日の「次にやること」だけを今の行動指針として見る
-- 小さな修正ごとではなく、機能単位や作業の区切りでまとめて記録する
-- 過去日の内容をあとから都合よく書き換えずに、新しい日付に「方針変更・整理したこと」を追記する
+- 最新日の「次にやること」だけを現在の行動指針として見る
+- 最新状態の確認は、README / TODO / project-plan / docs 配下の設計書を優先する
+- DEV_LOG は「なぜ今の状態になったか」を後から追うために使う
 
-## 2026-05-04
+---
+
+## 2026-05-04 〜 2026-05-10: CLI版AIエージェントMVP
 
 ### 実施したこと
 
-- OpenAI API 接続確認を実施
-- ターミナルからユーザー入力を受け取れるようにした
-- `exit` / `quit` で終了できるようにした
+- OpenAI API接続確認を実施
+- python main.py で動くCLIチャットを作成
+- exit / quit で終了できるようにした
 - 空入力時はAPIを呼ばないようにした
-- README.md にセットアップ手順・環境変数・起動方法を記載
-- `main.py` の処理を関数に分割
-- OpenAI API のエラーメッセージを種類別に整理
-- 起動中だけ保持する簡易的な会話履歴を追加
-- `main.py` に型ヒントを追加
-- OpenAI SDK の input 型警告を修正
-- `docs/DECISIONS.md` にログ設計の方針を記録
-- API呼び出し成功回数とエラー回数を起動中だけカウントし、終了時に実行サマリーとして表示
+- APIキー未設定、モデル名誤り、不正リクエスト、レート制限、タイムアウト、接続エラーなどのエラーメッセージを整理
+- 会話履歴をメモリ上だけに保持する方針にした
+- 会話本文はファイル保存しない方針を決定
+- API呼び出し成功回数、エラー回数、補助コマンド実行回数を終了時サマリーで表示
+- src/ 配下に設定、OpenAI処理、文脈読み込み、会話処理、CLI処理を分離
+- APIを呼ばない補助コマンドを追加
+  - summary
+  - todo-candidates
+  - command-suggestions
+  - doc-suggestions
+- 補助コマンドはファイル編集、Git操作、外部API呼び出しを自動実行しない方針にした
 
-### 現在の状態
+### 到達点
 
-- ローカル環境で `python main.py` を実行すると、簡易チャットとして動作する
-- 直近の会話履歴をメモリ上で保持できる
-- 会話履歴はファイルには保存せず、終了時に消える
-- レート制限・タイムアウト・接続エラーなどを日本語メッセージで表示する
-- 型ヒントにより、関数の入出力が分かりやすくなっている
-- ログに保存する情報・保存しない情報の方針が決まっている
-- 会話本文を保存せず、API呼び出し成功回数とエラー回数だけを終了時に確認できる
+- CLI版MVPとして、AIチャットと安全な補助コマンド群が動作する状態になった
+- 実行系ツールはまだ持たせず、読み取り・提案に限定した
+- APIキーや会話本文などの扱いについて、最低限の安全方針を整理できた
 
-### 次にやること
+---
 
-- エージェントに実行させるタスクを整理する
-
-## 2026-05-05
+## 2026-05-11: プロジェクト文脈整理
 
 ### 実施したこと
 
-- 最初のエージェント機能をTODO整理エージェントにする方針を決定
-- 最初はファイル自動編集、Git操作、クラウド操作、外部サービス連携を行わない方針を整理
-- `TODO.md` / `docs/DEV_LOG.md` / `docs/DECISIONS.md` を読み込み、TODO整理エージェントの応答に反映
-- TODO整理エージェントの回答形式を固定
-- `project-plan.md` を現在の実装状態に合わせて更新
-- `.env.example` に秘密情報が含まれていないことを確認
+- TODO.md / project-plan.md / docs/DECISIONS.md / docs/DEV_LOG.md の役割を整理
+- docs/DEV_LOG.md は通常のAI文脈読み込み対象から外す方針にした
+- TODO.md はAIが次の作業判断に使うメイン情報として扱う方針にした
+- DEV_LOG.md は基本的に人間向けの日誌として扱う方針にした
 
-### 現在の状態
+### 到達点
 
-- TODO整理エージェントがプロジェクト情報を踏まえて次のTODOを提案できる
-- 回答形式は「次の一手」「理由」「優先TODO」「注意点」「確認したいこと」に整理されている
+- AIに毎回すべての履歴を読ませるのではなく、必要な文脈だけ渡す方針を決定
+- TODO整理エージェントの改善は一旦区切り、Web化フェーズへ進む判断をした
 
-### 次にやること
+---
 
-- モデル名誤りや不正なAPIリクエスト時のエラーメッセージを追加する
-
-## 2026-05-06
+## 2026-05-24: Web版AIチャット実装
 
 ### 実施したこと
 
-- モデル名誤りや不正なAPIリクエスト時のエラーメッセージを追加
-- 関数名を分かりやすくリネーム
-- ツール実行ルールを `docs/DECISIONS.md` に記録
-- `TODO.md` にツール実行ルールの検討完了を反映
-- APIキー未設定時のエラー表示をユーザー向けに改善
-- `src/` パッケージを追加
-- 設定値を `src/config.py` に分離
-- OpenAI関連処理を `src/openai_client.py` に分離
-- プロジェクト文脈読み込み処理を `src/context.py` に分離
-- 会話履歴・初期会話履歴処理を `src/agent.py` に分離
-- CLIチャットループ処理を `src/cli.py` に分離
-- `main.py` を起動処理中心に整理
-- README.md に現在のファイル構成を追記
-- README.md の設計上の工夫を現在の実装に合わせて更新
-- 最初に追加する読み取り系ツールをプロジェクト状態サマリー表示ツールに決定
-- プロジェクト状態サマリー表示ツールの土台を `src/project_summary.py` に追加
-- `summary` コマンドでプロジェクト状態サマリー表示ツールを呼び出せるようにした
-- 実行系ツール候補を整理し、最初に具体化する候補をTODO候補生成ツールに決定
-- TODO候補生成ツールの仕様を `docs/DECISIONS.md` に記録
-
-### 現在の状態
-
-- モデル名が間違っている可能性がある場合に、`MODEL_NAME` の確認を促すメッセージを表示できる
-- APIリクエストの内容に問題がある場合に、モデル名や入力形式の確認を促すメッセージを表示できる
-- 実行系ツールはまだ追加せず、読み取りと提案に限定する方針
-- ファイル編集・Git操作・クラウド操作などは、自動実行しない方針
-- APIキー未設定時は、traceback ではなく `.env.example` を案内する短いメッセージを表示できる
-- 設定値、OpenAI関連処理、プロジェクト文脈読み込み処理、会話履歴処理、CLIチャットループ処理が `src/` 配下に分離されている
-- `main.py` は起動処理を担当し、主要な処理は `src/` 配下に分離されている
-- `summary` コマンドで、APIを呼ばずにプロジェクト状態サマリーを表示できる
-
-### 次にやること
-
-- TODO候補生成ツールを実装する
-
-
-## 2026-05-09
-
-### 実施したこと
-
-- TODO候補生成ツールの出力内容を候補一覧形式に整理
-- README.md に `summary` / `todo-candidates` コマンドの説明を追記
-- `command-suggestions` コマンドで、APIを呼ばずにコマンド候補を表示できるようにした
-- README.md に `command-suggestions` コマンドの説明を追記
-
-### 現在の状態
-
-- `todo-candidates` コマンドで、APIを呼ばずにTODO候補一覧を表示できる
-- TODO候補生成ツールは、TODO.md の自動編集、Git操作、外部API呼び出しを行わない
-- `command-suggestions` コマンドで、APIを呼ばずにコマンド候補を表示できる
-- 次に追加する安全な補助ツールをドキュメント更新案生成ツールに決定
-
-### 次にやること
-
-- ドキュメント更新案生成ツールを実装する
-
-## 2026-05-10
-
-### 実施したこと
-
-- `doc-suggestions` コマンドで、APIを呼ばずにドキュメント更新案を表示できるようにした
-- `summary` / `todo-candidates` / `command-suggestions` / `doc-suggestions` の動作確認を実施
-- 補助コマンド実行時に OpenAI API 呼び出し回数が増えないことを確認
-- 開発者向けログはファイル保存せず、終了時サマリー中心にする方針を `docs/DECISIONS.md` に記録
-- 実行サマリーに補助コマンド実行回数を表示するようにした
-- 補助コマンド実行回数とAPI呼び出し成功回数を分けて確認できるようにした
-- 通常AI応答と補助コマンドを1回ずつ実行し、実行サマリーで回数が分かれることを確認
-- CLI版MVPとして必要な主要機能は概ね実装済みと判断
-
-### 現在の状態
-
-- 4つの補助コマンドをAPI呼び出しなしで利用できる
-- 補助コマンドはファイル編集、Git操作、外部API呼び出しを自動実行しない
-
-### 次にやること
-
-- 補助コマンド群の扱いをREADME / project-plan.mdに反映する
-
-## 2026-05-11
-
-### 実施したこと
-
-- 補助コマンド群の扱いを README / project-plan.md に反映
-- AIに読み込ませるプロジェクト文脈を整理する方針に変更
-- TODO.md / project-plan.md / docs/DECISIONS.md / docs/DEV_LOG.md の役割を明確化
-- `docs/DEV_LOG.md` を通常のAI文脈読み込み対象から外した
-- 文脈整理後に「次のタスクは？」を確認し、完了済みタスクではなく文脈整理タスクが提案されることを確認
-
-### 現在の状態
-
-- DEV_LOG.md は基本的に人間向けの日誌として扱う
-- AIには必要なときだけ、または最新日のみ渡す方針
-- TODO.md はAIが次の作業判断に使うメイン情報として扱う
-- 通常のAI文脈には TODO.md / project-plan.md / docs/DECISIONS.md を渡す
-
-### 次にやること
-
-- TODO整理エージェントの改善は一旦区切り、次の開発フェーズへ進む
-- 最新状態専用ファイルの作成は必要になった段階で再検討する
-
-## 2026-05-24
-
-### 実施したこと
-
-- FastAPI版Web APIのルーティングを `app/routes/` 配下に分離
-- 会話履歴保存・取得APIをNext.jsフロントエンドから利用できるようにした
-- Next.jsアプリを `frontend/` に作成
-- Next.js画面から `/chat` APIを呼び出せるようにした
-- Next.js画面で会話IDを指定して保存済み会話履歴を読み込めるようにした
-- Next.js画面に新規会話ボタンを追加
-- フロントエンドからFastAPIへアクセスできるようにCORSを設定
+- FastAPI版Web APIを作成
+- APIルーティングを app/routes/ 配下に分離
+- /chat APIを実装
+- 会話履歴保存・取得APIを実装
+- SQLiteに会話履歴を保存できるようにした
+- Next.jsアプリを frontend/ に作成
+- Next.js画面からFastAPIの /chat APIを呼び出せるようにした
+- 会話IDを指定して保存済み会話履歴を読み込めるようにした
+- 新規会話ボタンを追加
+- CORS設定を追加し、Next.jsフロントエンドからFastAPIへアクセスできるようにした
 - README / TODO / docs/WEB_APP_DESIGN.md を現在の構成に合わせて更新
 
-### 現在の状態
+### 到達点
 
-- バックエンドはFastAPIで、`/chat` と `/conversations/{conversation_id}` を提供している
-- フロントエンドはNext.jsで、AIチャット、会話ID表示、履歴読み込み、新規会話リセットができる
-- 会話履歴はSQLiteに保存される
-- 静的HTML版は残しているが、現在の主なフロントエンドは `frontend/` のNext.js版
-- READMEを見れば、バックエンドとフロントエンドをそれぞれ起動できる
+- バックエンドはFastAPI、フロントエンドはNext.jsのWeb版AIチャットとして動作する状態になった
+- 会話履歴はSQLiteに保存され、会話IDで読み込める
+- 静的HTML版は残しつつ、主なフロントエンドはNext.js版に移行した
 
-### 次にやること
+---
 
-- Next.jsフロントエンドのコード整理とコンポーネント分割を検討する
-- その後、クラウド化設計に進む
+## 2026-05-24 〜 2026-05-26: クラウド化設計とコスト安全策
 
-## 2026-05-24
+### 実施したこと
 
-### 追加で実施したこと
-
-- `docs/CLOUD_DEPLOYMENT_PLAN.md` を作成
+- docs/CLOUD_DEPLOYMENT_PLAN.md を作成
 - クラウド化前に課金要素を整理
 - 面接デモ用に、一時構築・面接後解体の方針を整理
-- 停止手順と削除手順の方針を整理
-- コストアラート方針を整理
-- 本番公開する範囲を整理
-- クラウド化TODOを設計段階として完了にした
-- Terraform / IaCで管理する対象を整理
-- Terraform管理外にしないものを整理
-- `terraform destroy` 後に残りやすいリソースを整理
-- 月額上限の目安を整理
+- 停止手順と削除手順を整理
+- terraform destroy 後に残りやすいリソースを整理
+- 月額上限の考え方を整理
 - AWS Budgets設定手順を整理
-
-### 次にやること
-
-- AWS Budgetsを実際に設定する前の確認事項を整理する
-- AWS Budgetsを実際に設定する
-- Terraform実装に進む前に、面接デモ用の最小構成を最終確認する
-
-## 2026-05-25
 - AWS Budgetsで月額 $5 の予算を設定
 - 予測100%、実績50%、実績80%、実績100%のメール通知を設定
-- アプリ用AWSリソースはまだ作成していない
+- App Runnerは新規採用候補から外した
+- Lightsailを初期デモ構成の第一候補にした
+- ECS Express Modeは比較候補として残した
+- 月額 $5 は安全上限、月額 $10〜20 は実運用検討範囲として整理した
 
-## 2026-05-26
+### 判断
 
-### 実施したこと
+- 初期デモ構成は Vercel + Lightsail を採用する
+- ECS Express Modeは実務寄りだが、ALB / Fargate / Networking が絡むため、低額デモの第一候補にはしない
+- App Runnerは新規採用候補から外す
+- RDS、ALB、NAT Gateway、独自ドメイン、常時稼働DBは初期段階では作らない
+- OpenAI API利用料はAWSとは別枠で管理する
 
-- `docs/CLOUD_DEPLOYMENT_PLAN.md` を整理
-- App Runnerを新規採用候補から外し、除外候補として整理
-- Lightsailを初期デモ構成の第一候補に整理
-- ECS Express Modeを比較候補として整理
-- Lightsail構成の月額見積もりを確認
-- 月額 $5 は安全上限、月額 $10〜20 は実運用検討範囲として整理
+### 到達点
 
-### 現在の状態
+- クラウド化前に、課金事故を避けるための基本方針を整理できた
+- いきなり本番公開せず、面接前に一時構築し、面接後に削除する方針を決めた
 
-- AWS Budgetsは月額 $5 で設定済み
-- アプリ用AWSリソースはまだ作成していない
-- 初期デモ構成は Vercel + Lightsail が有力
-- ECS Express Modeは費用確認が必要な比較候補
+---
 
-### 次にやること
-
-- ECS Express Mode構成の月額見積もりを確認する
-- 採用する初期デモ構成を最終決定する
-- Terraform実装に進む前の作成リソースを最終確定する
-
-## 2026-05-29
+## 2026-05-29: Terraform最小構成作成とplan確認
 
 ### 実施したこと
 
-- `infra/terraform/` を作成
-- Terraform用のREADMEを追加
-- `.gitignore` にTerraform関連の除外設定を追加
-- `.terraform.lock.hcl` はGit管理する方針に修正
+- infra/terraform/ を作成
+- Terraform用READMEを追加
+- .gitignore にTerraform関連の除外設定を追加
+- .terraform.lock.hcl はGit管理する方針に修正
 - Lightsail用のTerraform最小構成を追加
-- `bundle_id = "nano_3_0"` がIPv4ありの月額 $5 Linux/Unixプランであることを確認
-- `blueprint_id = "ubuntu_22_04"` が有効なUbuntu 22.04 LTS Blueprintであることを確認
-- `terraform init` / `terraform fmt` / `terraform validate` を実行し成功
-- `terraform plan` を実行し、作成予定がLightsailインスタンス1件のみであることを確認
+  - main.tf
+  - variables.tf
+  - outputs.tf
+  - terraform.tfvars.example
+- bundle_id = "nano_3_0" がIPv4ありの月額 $5 Linux/Unixプランであることを確認
+- blueprint_id = "ubuntu_22_04" が有効なUbuntu 22.04 LTS Blueprintであることを確認
+- terraform init を実行し成功
+- terraform fmt を実行し成功
+- terraform validate を実行し成功
+- terraform plan を実行し、作成予定がLightsailインスタンス1件のみであることを確認
 
-### 現在の状態
+### 到達点
 
 - Terraform構成は文法的に有効
-- `terraform plan` は成功済み
-- `terraform apply` はまだ実行していない
-- AWSリソースはまだ作成していない
-- 作成予定リソースは `aws_lightsail_instance.backend` の1件のみ
+- terraform plan は成功済み
+- 作成予定リソースは aws_lightsail_instance.backend の1件のみ
+- この時点では terraform apply は未実行で、AWSリソースはまだ作成していなかった
+
+### 判断
+
+- Terraform管理対象はまずLightsailインスタンスに限定する
+- Vercel、OpenAI APIキー、.env、アプリ配置、サーバー内セットアップはTerraform管理外にする
+- Terraformには秘密情報を直接書かない
+- terraform.tfstate や terraform.tfvars はGit管理しない
+
+---
+
+## 2026-06-07: Terraform apply / destroy 検証
+
+### 実施したこと
+
+- terraform apply を実行
+- Lightsailインスタンス ai-agent-portfolio-demo を作成
+- AWS CLIで作成状態を確認
+- Terraform stateで管理対象を確認
+- SSH接続を試行
+- terraform destroy を実行
+- Lightsailインスタンス削除を確認
+- Terraform stateに管理対象が残っていないことを確認
+- AWS CLIで対象インスタンスが存在しないことを確認
+- docs/CLOUD_DEPLOYMENT_FLOWCHART.md を追加し、クラウド構成図をMermaidで整理
+
+### 結果
+
+- terraform apply は成功
+- Lightsailインスタンス作成は成功
+- terraform destroy は成功
+- Lightsailインスタンスは削除済み
+- Terraform stateにもリソースは残っていない
+- AWS CLIで The Instance does not exist を確認済み
+
+### 分かったこと
+
+- key_pair_name を指定しない場合、Lightsail側で LightsailDefaultKeyPair が使われる
+- ローカルに対応する秘密鍵がなく、通常の ssh ubuntu@<public_ip> では接続できなかった
+- aws lightsail get-key-pairs --region ap-northeast-1 の結果が空で、CLI上では利用可能なLightsail鍵を確認できなかった
+- 次回はTerraformで専用SSH公開鍵を登録し、Lightsailインスタンスに key_pair_name を明示する必要がある
+
+### 注意
+
+- applyからdestroyまで短時間で完了したが、作成した時間分のLightsail課金は発生する
+- AWS Budgetsは通知用であり、自動停止ではない
+- 今後もapply後は長時間放置しない
+- AWSアカウントID、ARN、パブリックIPなどを外部に貼る場合はマスクする
 
 ### 次にやること
 
-- `terraform apply` を実行する前に、最終確認を行う
-- Lightsail作成後のセットアップ手順を整理する
-- 面接デモ後の `terraform destroy` と残リソース確認手順を再確認する
+- Terraformで専用SSH公開鍵を登録する
+- Lightsailインスタンスに key_pair_name を明示する
+- 再度 terraform plan で作成予定を確認する
+- 必要な場合のみ terraform apply し、指定した秘密鍵でSSH接続を確認する
+- SSH接続確認後、FastAPI配置手順を整理する
+- 検証後は必ず terraform destroy で削除する
+
+---
+
+## 現在の最新状態
+
+- CLI版AIチャットMVPは実装済み
+- APIを呼ばない補助コマンド群は実装済み
+- Web版はFastAPI + Next.js + SQLite構成で実装済み
+- クラウド初期デモ構成は Vercel + Lightsail
+- AWS Budgetsは月額 $5 の通知用アラートとして設定済み
+- Terraform最小構成は作成済み
+- terraform init / fmt / validate / plan は成功済み
+- terraform apply / destroy の実地検証は成功済み
+- 現在、AWS上に対象Lightsailインスタンスは残っていない
+- 次の課題は、TerraformでSSHキーを明示管理すること
