@@ -197,6 +197,50 @@
 
 ---
 
+## 2026-06-14: Terraform SSHキー明示管理とSSH接続検証
+
+### 実施したこと
+
+- ローカルでLightsail接続用の専用SSH鍵を作成
+  - `~/.ssh/ai-agent-lightsail-demo`
+  - `~/.ssh/ai-agent-lightsail-demo.pub`
+- TerraformでLightsail専用SSH公開鍵を登録する構成を追加
+- Lightsailインスタンスに `key_pair_name` を明示
+- terraform fmt を実行し成功
+- terraform validate を実行し成功
+- terraform plan を実行し、作成予定が以下の2件であることを確認
+  - aws_lightsail_key_pair.demo
+  - aws_lightsail_instance.backend
+- terraform apply を実行し、Lightsailインスタンスを作成
+- 専用秘密鍵を使ってSSH接続できることを確認
+- SSH接続後、サーバー上で `whoami` と `hostname` を確認
+- terraform destroy を実行し、作成したリソースを削除
+- Terraform stateに管理対象が残っていないことを確認
+- AWS CLIで対象インスタンスが存在しないことを確認
+
+### 結果
+
+- Terraformで登録した専用SSHキーを使ってLightsailへ接続できた
+- 前回の `LightsailDefaultKeyPair` 問題は解消できた
+- terraform destroy により、LightsailインスタンスとLightsailキーペアは削除済み
+- AWS上に対象Lightsailインスタンスは残っていない
+
+### 分かったこと
+
+- Lightsailへ確実にSSH接続するには、Terraformで `key_pair_name` を明示するのが安全
+- 秘密鍵はTerraformで生成せず、ローカルで作成し、Terraformには公開鍵だけを渡す方針が安全
+- `key_pair_name = aws_lightsail_key_pair.demo.name` とすることで、Terraform上の依存関係も明確になる
+- SSH接続確認だけでも、検証後はすぐに `terraform destroy` する運用がよい
+
+### 次にやること
+
+- Lightsail上にFastAPIバックエンドを配置する手順を整理する
+- サーバー内セットアップ手順を、手動で実施する範囲とスクリプト化する範囲に分ける
+- VercelからLightsail上のバックエンドへ接続する構成を検討する
+- デモ前に作成し、デモ後に削除する運用手順を固める
+
+---
+
 ## 現在の最新状態
 
 - CLI版AIチャットMVPは実装済み
@@ -205,7 +249,9 @@
 - クラウド初期デモ構成は Vercel + Lightsail
 - AWS Budgetsは月額 $5 の通知用アラートとして設定済み
 - Terraform最小構成は作成済み
-- terraform init / fmt / validate / plan は成功済み
-- terraform apply / destroy の実地検証は成功済み
+- TerraformでLightsail専用SSH公開鍵を登録する構成は実装済み
+- Lightsailインスタンスに `key_pair_name` を明示する構成は実装済み
+- terraform init / fmt / validate / plan / apply / destroy の実地検証は成功済み
+- 専用秘密鍵を使ったLightsailへのSSH接続検証は成功済み
 - 現在、AWS上に対象Lightsailインスタンスは残っていない
-- 次の課題は、TerraformでSSHキーを明示管理すること
+- 次の課題は、Lightsail上へのFastAPIバックエンド配置手順を整理すること
