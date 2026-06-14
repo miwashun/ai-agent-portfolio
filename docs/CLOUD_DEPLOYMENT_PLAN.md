@@ -550,6 +550,65 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - 初期段階ではLightsailの作成・削除をTerraformの主目的にする
 - アプリ配置の自動化は後の改善対象にする
 
+## Lightsail上でのFastAPI一時起動手順
+
+### 方針
+
+- 初回はsystemd化しない
+- SSH接続後に手動でFastAPIを一時起動する
+- まずはLightsail内から疎通確認する
+- 外部公開は最小限にする
+- 8000番ポートをインターネット全体へ公開する前に、SSHトンネルで確認する
+- 確認後はFastAPIを停止する
+- 検証後は `terraform destroy` でLightsailリソースを削除する
+
+### Lightsail内での一時起動
+
+LightsailへSSH接続後、アプリ配置とPython環境の準備ができた状態で以下を実行する。
+
+```bash
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+まずはLightsail内から確認する。
+
+```bash
+curl http://127.0.0.1:8000/
+```
+
+確認後は `Ctrl+C` でFastAPIを停止する。
+
+### SSHトンネルでのローカル確認
+
+8000番ポートを全公開する前に、まずSSHトンネルでローカルPCから確認する。
+
+ローカルPC側で以下を実行する。
+
+```bash
+ssh -i ~/.ssh/ai-agent-lightsail-demo -L 8000:127.0.0.1:8000 ubuntu@<LightsailのパブリックIP>
+```
+
+別ターミナルで以下を実行する。
+
+```bash
+curl http://127.0.0.1:8000/
+```
+
+この確認が成功すれば、Lightsail上のFastAPIへローカルPCからSSH経由でアクセスできている。
+
+### 外部公開確認について
+
+Vercelから接続する段階では、バックエンドAPIを外部から到達できる形にする必要がある。
+
+ただし、初回検証では以下を避ける。
+
+- 8000番ポートを長時間開けっぱなしにする
+- 管理系APIを認証なしで公開する
+- OpenAI APIキーをフロントエンドに出す
+- 不要なポートを開放する
+
+外部公開が必要になった時点で、Lightsailファイアウォール、公開ポート、CORS、Vercel環境変数を改めて確認する。
+
 ## まだ実行しないこと
 
 - RDS作成
@@ -562,8 +621,9 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- Lightsail上へのFastAPIバックエンド配置手順を整理する
 - サーバー内セットアップ手順を、手動で実施する範囲とスクリプト化する範囲に分ける
-- FastAPIを一時的に起動して外部から疎通確認する手順を整理する
+- GitHubからLightsailへアプリを取得する手順を整理する
+- Lightsail上でPython仮想環境を作成する手順を整理する
+- Lightsail上でバックエンド用 `.env` を作成する手順を整理する
 - Vercel側の `NEXT_PUBLIC_API_BASE_URL` 設定手順を整理する
 - デモ後の `terraform destroy` と残リソース確認手順を再確認する
