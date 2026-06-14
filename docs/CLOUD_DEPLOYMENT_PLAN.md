@@ -179,7 +179,7 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 - 複雑なVPC / NAT Gateway
 - ALB / ECS / RDSを組み合わせた本格構成
 
-## Terraform管理外にしないもの
+## Terraform管理対象に含めるべきもの
 
 - バックエンド実行環境
 - フロントエンド公開設定
@@ -562,5 +562,8 @@ AIエージェントWebアプリをクラウド上で安全に動かすための
 
 ## 次にやること
 
-- Terraform実装前にREADMEまたは運用メモへ削除手順を反映する
-- Terraform実装に進む
+- Lightsail上へのFastAPIバックエンド配置手順を整理する
+- サーバー内セットアップ手順を、手動で実施する範囲とスクリプト化する範囲に分ける
+- FastAPIを一時的に起動して外部から疎通確認する手順を整理する
+- Vercel側の `NEXT_PUBLIC_API_BASE_URL` 設定手順を整理する
+- デモ後の `terraform destroy` と残リソース確認手順を再確認する
